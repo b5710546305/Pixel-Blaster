@@ -24,6 +24,10 @@ var GameLayer = cc.LayerColor.extend({
 			this.player.move(1);
 			console.log("right");
 		}
+		if(e == cc.KEY.z){
+			this.player.jump();
+			console.log("z");
+		}
 		//test with "console.log(message)"
 
 	},

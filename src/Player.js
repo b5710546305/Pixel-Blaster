@@ -32,5 +32,8 @@ var Player = cc.Sprite.extend({
 			this.vx = -5;
 			//this.getSprite().scaleX = -1;
 		}
+	},
+	jump: function(){
+		this.vy = 4;
 	}
 });
