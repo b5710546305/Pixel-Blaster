@@ -7,6 +7,9 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.scheduleUpdate();
 
+		this.player = new Player();
+		this.addChild(this.player,1);
+
 		return true;
 	},
 	onKeyDown: function(e){
