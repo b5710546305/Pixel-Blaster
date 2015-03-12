@@ -1,3 +1,8 @@
+/**
+  * Player is the main controling character
+  * The sprite is a small robot
+  * @class Player
+  */
 var Player = cc.Sprite.extend({
 	/**
 	 * Constructor
@@ -8,12 +13,14 @@ var Player = cc.Sprite.extend({
 
 		this.setPosition(new cc.Point(screenWidth/2,100));
 
-		this.vx = 0;
-		this.vy = 0;
+		this.vx = 0; //horizonal speed
+		this.vy = 0; //vertical speed
 
-		this.G = -1;
+		this.G = -1; //gravity
 
-		this.onFloor = true;
+		this.ground = null;
+
+		this.floor = null;
 
 		this.scheduleUpdate();
 		
@@ -23,15 +30,25 @@ var Player = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		/**Before Moves*/
 		var pos = this.getPosition();
+		var posRect = this.getPlayerRect();
 		//this.vy += this.G;
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 		//this.autoDecelerateX();
 		//if(!this.collisionBottomCheck()) {
-			this.vy += this.G; 
+			if (this.ground == null) {
+				this.vy += this.G;
+			}
 			//this.canJump = false;
 		//}
 		//else (this.canJump = true;)
+
+		/**After Moves*/
+		var newPos = this.getPosition();
+		var newPosRect = this.getPlayerRect();
+
+		this.handleCollision( posRect, newPosRect );
 	},
 	/**
 	 * Slow down movement in X axis to 0
@@ -47,21 +64,24 @@ var Player = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	move: function(dir){
-		if(dir == 1){
+		if(dir == 1){ //right
 			this.vx = 5;
 			//this.getSprite().scaleX = 1;
 		}
-		if(dir == -1){
+		if(dir == -1){ //left
 			this.vx = -5;
 			//this.getSprite().scaleX = -1;
 		}
 	},
 	/**
-	 * Jump while can jump
+	 * Jump while on the ground
 	 * @return {Void}
 	 */
 	jump: function(){
-		if (this.onFloor) {this.vy = 8;}
+		if (this.ground) {
+			this.vy = 8;
+			this.ground = null;
+		}
 	},
 	/**
 	 * Get the rectangle that is for player's collision checking in world
@@ -73,24 +93,61 @@ var Player = cc.Sprite.extend({
 
         var dX = this.x - spritePos.x;
         var dY = this.y - spritePos.y;
-        return cc.rect( spriteRect.x + dX,
-                        spriteRect.y + dY,
+        return cc.rect( spriteRect.x, //+ dX,
+                        spriteRect.y, //+ dY,
                         spriteRect.width,
                         spriteRect.height );
     },
     /**
 	 * Check for collision
-	 * @param: {cc.Rect} oldPosRect = ??
-	 * @param: {cc.Rect} newPosRect = ??
-	 * @return {Boolean}
+	 * @param: {cc.Rect} oldRect = the old bounding rectangle before moving
+	 * @param: {cc.Rect} newRect = the next bounding rectangle after moves
+	 * @return {Void}
 	 */
-	collisionCheck: function(oldPosRect, newPosRect){
-		if(!this.onFloor){
-			if(this.vy <= 0){
-				
-			}
-		}
+	handleCollision: function(oldRect, newRect){
+		if ( this.ground ) {
+            if ( !this.ground.onTop( newRect ) ) {
+                this.ground = null;
+            }
+        } else {
+            if ( this.vy < 0 ) {
+                var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
+                
+                if ( topFloor ) {
+                    this.ground = topFloor;
+                    this.y = topFloor.getTopY()+(this.height/2);
+                    this.vy = 0;
+                }
+            }
+        }
+	},
+	/**
+	 * Find the floor to stand on
+	 * @param: {Floor} floor = the floor
+	 * @param: {cc.Rect} oldRect = the old bounding rectangle before moving
+	 * @param: {cc.Rect} newRect = the next bounding rectangle after moves
+	 * @return {Floor}
+	 */
+	findTopFloor: function( floor, oldRect, newRect ) {
+        var topFloor = null;
+        var topFloorY = -1;
 
-		return false;
+            if ( floor.hitTop( oldRect, newRect ) ) {
+                if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
+                    topFloorY = floor.getTopY();
+                    topFloor = floor;
+                }
+            }
+
+        
+        return topFloor;
+    },
+    /**
+	 * Mutator of prefered floor
+	 * @param: {Floor} floor = a floor to redefine
+	 * @return {Void}
+	 */
+	setFloor: function(floor){
+		this.floor = floor;
 	}
 });

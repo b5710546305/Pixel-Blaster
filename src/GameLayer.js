@@ -1,3 +1,7 @@
+/**
+  * The game layer
+  * @class GameLayer
+  */
 var GameLayer = cc.LayerColor.extend({
 	/**
 	 * Initialize
@@ -16,6 +20,11 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.floor = new Floor();
 		this.addChild(this.floor);
+		this.player.setFloor(this.floor);
+
+		//this.player.floors.forEach( function( f ) {
+        //    this.addChild( f );
+        //}, this.player );
 
 		console.log(this.floor.getTopY());
 
@@ -79,6 +88,10 @@ var GameLayer = cc.LayerColor.extend({
 	}
 });
 
+/**
+  * The start scene
+  * @class StartScene
+  */
 var StartScene = cc.Scene.extend({
 	/**
 	 * Start the game layer
