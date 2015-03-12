@@ -10,6 +10,9 @@ var GameLayer = cc.LayerColor.extend({
 		this.player = new Player();
 		this.addChild(this.player,1);
 
+		this.floor = new Floor();
+		this.addChild(this.floor);
+
 		return true;
 	},
 	onKeyDown: function(e){
