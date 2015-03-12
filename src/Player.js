@@ -66,11 +66,11 @@ var Player = cc.Sprite.extend({
 	move: function(dir){
 		if(dir == 1){ //right
 			this.vx = 5;
-			//this.getSprite().scaleX = 1;
+			this.setScaleX(1);
 		}
 		if(dir == -1){ //left
 			this.vx = -5;
-			//this.getSprite().scaleX = -1;
+			this.setScaleX(-1);
 		}
 	},
 	/**
