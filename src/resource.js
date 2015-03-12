@@ -1,5 +1,6 @@
 var res = {
-    player: "res/images/player.png"
+    player: "res/images/player.png",
+    floor: "res/images/floor.png"
 };
 
 var g_resources = [];

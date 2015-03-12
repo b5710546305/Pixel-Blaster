@@ -13,10 +13,19 @@ var GameLayer = cc.LayerColor.extend({
 		return true;
 	},
 	onKeyDown: function(e){
+		if(e == cc.KEY.left){
+			this.player.move(-1);
+			console.log("left");
+		}
+		if(e == cc.KEY.right){
+			this.player.move(1);
+			console.log("right");
+		}
 		//test with "console.log(message)"
+
 	},
 	onKeyUp: function(e){
-		
+		this.player.decelerateX();
 	},
 
 	addKeyboardHandlers: function(){
