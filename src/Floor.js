@@ -6,5 +6,8 @@ var Floor = cc.Sprite.extend({
 		this.setAnchorPoint(new cc.Point(0,0));
 
 		this.setPosition(new cc.Point(0,-19));
-	}
+	},
+    getTopY: function() {
+        return cc.rectGetMaxY( this.getBoundingBoxToWorld() );
+    }
 });

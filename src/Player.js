@@ -8,7 +8,9 @@ var Player = cc.Sprite.extend({
 		this.vx = 0;
 		this.vy = 0;
 
-		this.G = 1;
+		this.G = -1;
+
+		this.canJump = true;
 
 		this.scheduleUpdate();
 		
@@ -18,6 +20,11 @@ var Player = cc.Sprite.extend({
 		//this.vy += this.G;
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 		//this.autoDecelerateX();
+		//if(!this.collisionBottomCheck()) {
+			this.vy += this.G; 
+			//this.canJump = false;
+		//}
+		//else (this.canJump = true;)
 	},
 	decelerateX: function(){
 		while(this.vx > 0) {this.vx -= 1;}
@@ -34,6 +41,11 @@ var Player = cc.Sprite.extend({
 		}
 	},
 	jump: function(){
-		this.vy = 4;
+		if (this.canJump) {this.vy = 8;}
+	},
+	collisionBottomCheck: function(){
+
+
+		return false;
 	}
 });

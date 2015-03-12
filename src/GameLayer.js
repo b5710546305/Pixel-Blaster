@@ -13,6 +13,8 @@ var GameLayer = cc.LayerColor.extend({
 		this.floor = new Floor();
 		this.addChild(this.floor);
 
+		console.log(this.floor.getTopY());
+
 		return true;
 	},
 	onKeyDown: function(e){
