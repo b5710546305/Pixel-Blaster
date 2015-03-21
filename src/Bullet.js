@@ -16,10 +16,18 @@
 
 		//if(!owner.faceUp){
 			this.setScaleX(owner.getScaleX());
-			this.vx = 10*owner.getScaleX(); //horizonal speed
-			this.vy = 0; //vertical speed
+			//this.vx = 10*owner.getScaleX(); //horizonal speed
+			//this.vy = 0; //vertical speed
 		
+		if(owner.getScaleX() == -1){
+			this.setRotation(angle);
+		} else {
+			this.setRotation(-angle);
+		}
 		
+		//Speed by angle
+		this.vx = 25*owner.getScaleX()*Math.cos(angle*(Math.PI/180));
+		this.vy = 25*owner.getScaleY()*Math.sin(angle*(Math.PI/180));
 
 		this.scheduleUpdate();
 		

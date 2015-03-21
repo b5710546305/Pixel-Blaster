@@ -132,8 +132,9 @@ var GameLayer = cc.LayerColor.extend({
 			})
 		}
 		*/
-		var angle = Math.atan2(location.x,location.y);
-		this.player.shoot();
+		var angle = Math.atan((location.y-this.player.y)/Math.abs(location.x-this.player.x));
+		angle = angle * (180/Math.PI);
+		this.player.shoot(angle);
 	},
 	/**
 	 * When the screen is not touched by mouse anymore
