@@ -163,13 +163,14 @@ var Player = cc.Sprite.extend({
 	},
 	/**
 	 * UShoot bullet
+	 * @param: {Number} angle = angle by 0-360 or in degree unit
 	 * @return {Void}
 	 */
 	shoot: function(angle){
 		if(this.shootDelay < 0){
 			var bullet = new Bullet(this,angle);
 			this.game.addChild(bullet);
-
+			this.game.bullets[bullets.length-1] = bullet;
 			this.shootDelay = 3;
 		}
 		

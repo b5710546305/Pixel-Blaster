@@ -24,6 +24,8 @@ var GameLayer = cc.LayerColor.extend({
 		this.addChild(this.floor);
 		this.player.setFloor(this.floor);
 
+		this.bullets = [];
+
 		//this.player.floors.forEach( function( f ) {
         //    this.addChild( f );
         //}, this.player );
