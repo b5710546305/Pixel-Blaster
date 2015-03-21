@@ -165,9 +165,9 @@ var Player = cc.Sprite.extend({
 	 * UShoot bullet
 	 * @return {Void}
 	 */
-	shoot: function(angle){
+	shoot: function(){
 		if(this.shootDelay < 0){
-			var bullet = new Bullet(this,angle);
+			var bullet = new Bullet(this);
 			this.game.addChild(bullet);
 
 			this.shootDelay = 3;

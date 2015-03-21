@@ -52,10 +52,10 @@ var GameLayer = cc.LayerColor.extend({
 			this.player.jump();
 			//console.log("jump");
 		}
-		if(e == cc.KEY.c){
-			this.player.shoot();
+		//if(e == cc.KEY.c){
+		//	this.player.shoot();
 			//console.log("shoot");
-		}
+		//}
 		//if(e == cc.KEY.w){
 		//	this.player.faceUp = true;
 		//}
@@ -93,6 +93,55 @@ var GameLayer = cc.LayerColor.extend({
 				self.onKeyUp(e);
 			}
 		},this);
+	},
+	/**
+	 * Add mouse to the game layer
+	 * @return {Void}
+	 */
+	addMouseHandlers: function(){
+		var self = this;
+		cc.eventManager.addListener({
+			event: cc.EventListener.MOUSE,
+			onMouseDown : function(e){
+				self.onMouseDown(e);
+			},
+			onMouseMoved: function(e){
+				self.onMouseMoved(e);
+			}
+		},this);
+	},
+	/**
+	 * When the screen is clicked by mouse
+	 * @return {Void}
+	 */
+    onMouseDown:function (event) {
+		var location = event.getLocation();
+		//gameLayer.removeChild(redCircle);
+		/*
+		for(i=0;i<4;i++){
+			var redBullet = cc.Sprite.create("redbullet.png");
+			redBullet.xSpeed=bulletSpeed*Math.cos(i*Math.PI/2);
+			redBullet.ySpeed=bulletSpeed*Math.sin(i*Math.PI/2);
+			gameLayer.addChild(redBullet);	
+			redBullet.setPosition(location);
+			redBullet.schedule(function(){
+     			this.setPosition(new cc.Point(this.getPosition().x+this.xSpeed,this.getPosition().y+this.ySpeed));
+				if(this.getPosition().x>500 || this.getPosition().y>500 || this.getPosition().x<0 || this.getPosition().y<0){
+					gameLayer.removeChild(this);
+				}
+			})
+		}
+		*/
+		var angle = Math.atan2(location.x,location.y);
+		this.player.shoot();
+	},
+	/**
+	 * When the screen is not touched by mouse anymore
+	 * @return {Void}
+	 */
+	 onMouseMoved:function(event){
+		var location = event.getLocation();
+		this.bulletTest.setPosition(location);
 	},
 	/**
 	 * Update the game scene
