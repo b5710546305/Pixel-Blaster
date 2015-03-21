@@ -6,6 +6,7 @@
 var Player = cc.Sprite.extend({
 	/**
 	 * Constructor
+	 * @param: {GameLayer} game = the current game
 	 */
 	ctor: function(game){
 		this._super();

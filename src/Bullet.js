@@ -5,6 +5,8 @@
   var Bullet = cc.Sprite.extend({
 	/**
 	 * Constructor
+	 * @param: {Player} owner = the current player owned the bullet
+	 * @param: {Number} angle = the angle of the bullet
 	 */
 	ctor: function(owner,angle){
 		this._super();
