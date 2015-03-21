@@ -12,6 +12,8 @@
 
 		this.owner = owner;
 
+		this.game = owner.game;
+
 		this.setPosition(new cc.Point(owner.x,owner.y-4));
 
 		//if(!owner.faceUp){
@@ -26,8 +28,8 @@
 		}
 		
 		//Speed by angle
-		this.vx = 25*owner.getScaleX()*Math.cos(angle*(Math.PI/180));
-		this.vy = 25*owner.getScaleY()*Math.sin(angle*(Math.PI/180));
+		this.vx = 30*owner.getScaleX()*Math.cos(angle*(Math.PI/180));
+		this.vy = 30*owner.getScaleY()*Math.sin(angle*(Math.PI/180));
 
 		this.scheduleUpdate();
 		
@@ -38,8 +40,20 @@
 	 */
 	update: function(){
 		var pos = this.getPosition();
-		var posRect = this.getBoundingBoxToWorld();
 		//this.vy += this.G;
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
+
+		if(this.hitFloor()){
+			this.game.removeChild(this);
+		}
+	},
+	/**
+	 * Check if the bullet hits the floor
+	 * @return {Boolean}
+	 */
+	hitFloor: function(){
+		var posRect = this.getBoundingBoxToWorld();
+		var floorPosRect = this.game.floor.getBoundingBoxToWorld();
+		return cc.rectIntersectsRect(posRect,floorPosRect);
 	}
 });
