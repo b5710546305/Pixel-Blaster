@@ -7,7 +7,7 @@ var Player = cc.Sprite.extend({
 	/**
 	 * Constructor
 	 */
-	ctor: function(){
+	ctor: function(game){
 		this._super();
 		this.initWithFile('res/images/player.png');
 
@@ -21,6 +21,14 @@ var Player = cc.Sprite.extend({
 		this.ground = null;
 
 		this.floor = null;
+
+		this.game = game;
+
+		this.shootDelay = 3;
+
+		//this.aimingRotation = 0;
+
+		//this.faceUp = false;
 
 		this.scheduleUpdate();
 		
@@ -37,6 +45,9 @@ var Player = cc.Sprite.extend({
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 		//this.autoDecelerateX();
 		//if(!this.collisionBottomCheck()) {
+
+		this.shootDelay--;
+
 			if (this.ground == null) {
 				this.vy += this.G;
 			}
@@ -149,5 +160,18 @@ var Player = cc.Sprite.extend({
 	 */
 	setFloor: function(floor){
 		this.floor = floor;
+	},
+	/**
+	 * UShoot bullet
+	 * @return {Void}
+	 */
+	shoot: function(angle){
+		if(this.shootDelay < 0){
+			var bullet = new Bullet(this,angle);
+			this.game.addChild(bullet);
+
+			this.shootDelay = 3;
+		}
+		
 	}
 });

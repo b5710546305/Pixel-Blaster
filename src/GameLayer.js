@@ -13,9 +13,11 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.addKeyboardHandlers();
 
+		this.addMouseHandlers();
+
 		this.scheduleUpdate();
 
-		this.player = new Player();
+		this.player = new Player(this);
 		this.addChild(this.player,1);
 
 		this.floor = new Floor();
@@ -28,6 +30,9 @@ var GameLayer = cc.LayerColor.extend({
 
 		console.log(this.floor.getTopY());
 
+		this.bulletTest = cc.Sprite.create("res/images/bullet.png");		
+     	this.addChild(this.bulletTest);
+
 		return true;
 	},
 	/**
@@ -35,18 +40,25 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	onKeyDown: function(e){
-		if(e == cc.KEY.left){
+		if(e == cc.KEY.a){
 			this.player.move(-1);
-			console.log("left");
+			//console.log("left");
 		}
-		if(e == cc.KEY.right){
+		if(e == cc.KEY.d){
 			this.player.move(1);
-			console.log("right");
+			//console.log("right");
 		}
-		if(e == cc.KEY.z){
+		if(e == cc.KEY.w){
 			this.player.jump();
-			console.log("z");
+			//console.log("jump");
 		}
+		if(e == cc.KEY.c){
+			this.player.shoot();
+			//console.log("shoot");
+		}
+		//if(e == cc.KEY.w){
+		//	this.player.faceUp = true;
+		//}
 		//test with "console.log(message)"
 
 	},
@@ -55,12 +67,15 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	onKeyUp: function(e){
-		if(e == cc.KEY.left){
+		if(e == cc.KEY.a){
 			this.player.decelerateX();
 		}
-		if(e == cc.KEY.right){
+		if(e == cc.KEY.d){
 			this.player.decelerateX();
 		}
+		//if(e == cc.KEY.w){
+		//	this.player.faceUp = false;
+		//}
 
 	},
 	/**
