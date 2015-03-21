@@ -170,7 +170,7 @@ var Player = cc.Sprite.extend({
 		if(this.shootDelay < 0){
 			var bullet = new Bullet(this,angle);
 			this.game.addChild(bullet);
-			this.game.bullets[bullets.length-1] = bullet;
+			this.game.bullets[this.game.bullets.length-1] = bullet;
 			this.shootDelay = 3;
 		}
 		
