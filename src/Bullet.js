@@ -14,6 +14,12 @@
 
 		this.setPosition(new cc.Point(owner.x,owner.y-4));
 
+		//if(!owner.faceUp){
+			this.setScaleX(owner.getScaleX());
+			this.vx = 10*owner.getScaleX(); //horizonal speed
+			this.vy = 0; //vertical speed
+		
+		
 
 		this.scheduleUpdate();
 		
