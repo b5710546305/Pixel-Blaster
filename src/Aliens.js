@@ -305,8 +305,8 @@ var DriverAlien = cc.Sprite.extend({
     		else if(this.game.player.x - this.x > 0) {// player is at right
     			this.accelX = 1;
     		}
-    	} else {
-    		this.accelX = this.getScaleX();
+    	} else { 
+    		this.accelX = this.getScaleX(); //just move away after player died
     	}
     	
     },

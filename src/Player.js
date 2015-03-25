@@ -56,6 +56,15 @@ var Player = cc.Sprite.extend({
 				this.die(); //die by falling off
 			}
 
+		//Die when hit an enemy
+		var enemies = this.game.enemies;
+		for(var i = 0; i < enemies.length; i++){
+			if(this.collideWithEnemy(enemies[i])){
+				this.die();
+			}
+		}
+			
+
 		this.shootDelay--;
 
 			if (this.ground == null) {
@@ -185,6 +194,16 @@ var Player = cc.Sprite.extend({
 		}
 		
 	},
+	/**
+	 * Check if the player hits the enemy
+	 * @param: {Aliens, Drones} enemy = the enemy to check collision
+	 * @return {Boolean}
+	 */
+	 collideWithEnemy: function(enemy){
+	 	var posRect = this.getBoundingBoxToWorld();
+	 	var enemyPosRect = enemy.getBoundingBoxToWorld();
+	 	return cc.rectIntersectsRect(posRect,enemyPosRect);
+	 },
 	/**
 	 * Get out of the game
 	 * @return {Void}

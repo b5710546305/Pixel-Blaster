@@ -54,6 +54,10 @@
 
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
+		if(this.outOfBounds()){
+			this.game.removeChild(this);
+		}
+
 	},
 	/**
 	 * Make the direction of the drone's velocity been set to be towards player all the time
@@ -102,5 +106,14 @@
     die: function(){
     	this.game.removeChild(this);
     	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-    }
+    },
+	/**
+	 * Check if the fly-drone flew off the screen
+	 * @return {Boolean}
+	 */
+	outOfBounds: function(){
+		var pos = this.getPosition();
+		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
+	}
 });
+	

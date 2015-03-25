@@ -5,7 +5,7 @@
   var Bullet = cc.Sprite.extend({
 	/**
 	 * Constructor
-	 * @param: {Player,Aliens} owner = the current owner of the bullet, can be both player and enemies
+	 * @param: {Player,Aliens,Drones} owner = the current owner of the bullet, can be both player and enemies
 	 * @param: {Number} speed = the speed of the bullet
 	 * @param: {Number} angle = the angle of the bullet
 	 */
@@ -79,7 +79,7 @@
 	/**
 	 * Check if the bullet hits the enemy
 	 * @return {Boolean}
-	 * @param {Player,Aliens} enemy : the enemy hit
+	 * @param {Player,Aliens,Drones} enemy : the enemy hit
 	 */
 	hitEnemy: function(enemy){
 		var posRect = this.getBoundingBoxToWorld();
