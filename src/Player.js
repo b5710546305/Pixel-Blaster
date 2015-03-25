@@ -27,7 +27,11 @@ var Player = cc.Sprite.extend({
 
 		this.game = game;
 
+		this.alive = true;
+
 		this.shootDelay = 3;
+
+		this.bulletSpeed = 30;
 
 		//this.aimingRotation = 0;
 
@@ -48,6 +52,9 @@ var Player = cc.Sprite.extend({
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 		//this.autoDecelerateX();
 		//if(!this.collisionBottomCheck()) {
+			if(pos.y > screenHeight){
+				this.die(); //die by falling off
+			}
 
 		this.shootDelay--;
 
@@ -165,17 +172,26 @@ var Player = cc.Sprite.extend({
 		this.floor = floor;
 	},
 	/**
-	 * UShoot bullet
+	 * Shoot bullet
 	 * @param: {Number} angle = angle by 0-360 or in degree unit
 	 * @return {Void}
 	 */
 	shoot: function(angle){
 		if(this.shootDelay < 0){
-			var bullet = new Bullet(this,angle);
+			var bullet = new Bullet(this,this.bulletSpeed,angle);
 			this.game.addChild(bullet);
 			this.game.bullets.push(bullet);
 			this.shootDelay = 3;
 		}
 		
-	}
+	},
+	/**
+	 * Get out of the game
+	 * @return {Void}
+	 */
+    die: function(){
+    	this.game.removeChild(this);
+    	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+    	this.alive = false; //game over
+    }
 });

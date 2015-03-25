@@ -34,8 +34,6 @@ var GameLayer = cc.LayerColor.extend({
         //    this.addChild( f );
         //}, this.player );
 
-		console.log(this.floor.getTopY());
-
 		this.bulletTest = cc.Sprite.create("res/images/bullet.png");		
      	this.addChild(this.bulletTest);
 

@@ -5,10 +5,11 @@
   var Bullet = cc.Sprite.extend({
 	/**
 	 * Constructor
-	 * @param: {Player} owner = the current player owned the bullet
+	 * @param: {Player,Aliens} owner = the current owner of the bullet, can be both player and enemies
+	 * @param: {Number} speed = the speed of the bullet
 	 * @param: {Number} angle = the angle of the bullet
 	 */
-	ctor: function(owner,angle){
+	ctor: function(owner,speed,angle){
 		this._super();
 		this.initWithFile('res/images/bullet.png');
 
@@ -30,8 +31,8 @@
 		}
 		
 		//Speed by angle
-		this.vx = 30*owner.getScaleX()*Math.cos(angle*(Math.PI/180));
-		this.vy = 30*owner.getScaleY()*Math.sin(angle*(Math.PI/180));
+		this.vx = speed*owner.getScaleX()*Math.cos(angle*(Math.PI/180));
+		this.vy = speed*owner.getScaleY()*Math.sin(angle*(Math.PI/180));
 
 		this.scheduleUpdate();
 		
@@ -45,22 +46,29 @@
 		//this.vy += this.G;
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
-		if(this.hitFloor()){
+		if(this.hitFloor()||this.outOfBounds()){
 			this.game.removeChild(this);
 		}
-		var enemies = this.game.enemies;
-		for(var i = 0; i < enemies.length; i++){
-			if(this.hitEnemy(enemies[i])){
-				enemies[i].setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-				this.game.removeChild(enemies[i]);
+		if(this.owner == this.game.player){
+			var enemies = this.game.enemies;
+			for(var i = 0; i < enemies.length; i++){
+				if(this.hitEnemy(enemies[i])){
+					enemies[i].die();
+					this.game.removeChild(this);
+					break;
+				}
+			}
+		} else {
+			if(this.hitEnemy(this.game.player)){
+				this.game.player.die();
 				this.game.removeChild(this);
-				break;
 			}
 		}
 		
+		
 	},
 	/**
-	 * Check if the bullet hits the floor
+	 * Check if the bullet hits the floora
 	 * @return {Boolean}
 	 */
 	hitFloor: function(){
@@ -71,11 +79,18 @@
 	/**
 	 * Check if the bullet hits the enemy
 	 * @return {Boolean}
-	 * @param {Any Enemy} enemy : the enemy hit
+	 * @param {Player,Aliens} enemy : the enemy hit
 	 */
 	hitEnemy: function(enemy){
 		var posRect = this.getBoundingBoxToWorld();
 		var enemyPosRect = enemy.getBoundingBoxToWorld();
 		return cc.rectIntersectsRect(posRect,enemyPosRect);
+	},
+	/**
+	 * Check if the bullet flew off the screen
+	 * @return {Boolean}
+	 */
+	outOfBounds: function(){
+		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
 	}
 });

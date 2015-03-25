@@ -38,7 +38,7 @@ var GroundAlien = cc.Sprite.extend({
 
 		this.game = game;
 
-		this.shootDelay = 3;
+		this.shootDelay = this.game.getRandomInt(20,80);
 
 		//this.aimingRotation = 0;
 
@@ -58,6 +58,11 @@ var GroundAlien = cc.Sprite.extend({
 
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
+		if(pos.y > screenHeight){
+			this.die(); //die by falling off
+		}
+
+		this.shoot();
 		this.shootDelay--;
 
 			if (this.ground == null) {
@@ -121,5 +126,27 @@ var GroundAlien = cc.Sprite.extend({
 
         
         return topFloor;
+    },
+    /**
+	 * Shoot in randomly generated delay time
+	 * @return {Void}
+	 */
+    shoot: function(){
+    	var shotSpeed = 10;
+    	var angle = 0;
+    	if(this.shootDelay < 0){
+			var bullet = new Bullet(this,shotSpeed,angle);
+			this.game.addChild(bullet);
+			this.game.bullets.push(bullet);
+			this.shootDelay = this.game.getRandomInt(20,80);
+		}
+    },
+    /**
+	 * Get out of the game
+	 * @return {Void}
+	 */
+    die: function(){
+    	this.game.removeChild(this);
+    	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
     }
 });
