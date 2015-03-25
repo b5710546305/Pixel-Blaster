@@ -33,7 +33,7 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.gameTime = 0;
 
-		this.enemiesType = [GameLayer.ENEMIES.GROUND_ALIEN, GameLayer.ENEMIES.FLY_DRONE];
+		this.enemiesType = [GameLayer.ENEMIES.GROUND_ALIEN, GameLayer.ENEMIES.FLY_DRONE, GameLayer.ENEMIES.DRIVER_ALIEN];
 		this.totalEnemiesType = this.enemiesType.length;
 
 		this.spawnEnemies(GameLayer.ENEMIES.FLY_DRONE);
@@ -161,8 +161,8 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	update: function(){
-		this.gameTime++;
-		if(this.spawnDelay < 0){
+		if(this.player.alive){this.gameTime++;}
+		if(this.spawnDelay < 0 && this.player.alive){
 			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
 		}
 		this.spawnDelay--;
@@ -191,6 +191,16 @@ var GameLayer = cc.LayerColor.extend({
 				var spawnIndex = this.getRandomInt(-1,2);
 				var newEnemy = new FlyDrone(this,spawnIndex);
 				this.enemies.push(newEnemy);
+				this.addChild(newEnemy);
+				break;
+			case DRIVER_ALIEN :
+				var spawnDir = this.getRandomInt(-2,3);
+				if(spawnDir == 0){
+					break;
+				}
+				var newEnemy = new DriverAlien(this,spawnDir);
+				this.enemies.push(newEnemy);
+				newEnemy.setFloor(this.floor);
 				this.addChild(newEnemy);
 				break;
 		}

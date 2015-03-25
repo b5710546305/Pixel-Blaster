@@ -14,6 +14,9 @@
 
 		this.game = game;
 
+		/**WARNING!!**/
+		/**This is FLY DRONE, DO NOT confuses the code with OTHER DRONES**/
+
 		var topLeft = -1;
 		var ceiling = 0;
 		var topRight = 1;
@@ -87,6 +90,10 @@
 		}
 		this.vx = this.speed*dirX*Math.cos(angleToPlayer);
 		this.vy = this.speed*dirY*Math.sin(angleToPlayer);
+		if(!this.targetPlayer.alive){ //fly away sadly if the player is already dead
+			this.vx = 0;
+			this.vy = this.speed;
+		}
 	},
 	/**
 	 * Get out of the game
