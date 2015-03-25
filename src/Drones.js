@@ -27,6 +27,10 @@
 		this.scheduleUpdate();
 		
 	},
+	/**
+	 * Update the drone's status, such as position, sprite image, states, speed, direction
+	 * @return {Void}
+	 */
 	update: function(){
 		var pos = this.getPosition();
 		var posRect = this.getBoundingBoxToWorld();
@@ -36,6 +40,10 @@
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
 	},
+	/**
+	 * Make the direction of the drone's velocity been set to be towards player all the time
+	 * @return {Void}
+	 */
 	setSpeedTowardsPlayer: function(){
 		var pos = this.getPosition();
 		var playerPos = this.targetPlayer.getPosition();
