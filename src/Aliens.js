@@ -10,12 +10,14 @@ var GroundAlien = cc.Sprite.extend({
 	 */
 	ctor: function(game,dir){
 		this._super();
-		this.initWithFile('res/images/player.png');
+		this.initWithFile('res/images/ground_alien.png');
+
+		var spawnHeight = 100;
 
 		if(dir < 0)
-			this.setPosition(new cc.Point(0,100));
+			this.setPosition(new cc.Point(0,spawnHeight));
 		else
-			this.setPosition(new cc.Point(screenWidth,100));
+			this.setPosition(new cc.Point(screenWidth,spawnHeight));
 
 		if(dir < 0)
 			this.setScaleX((dir/dir))
