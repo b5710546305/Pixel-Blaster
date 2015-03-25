@@ -26,6 +26,10 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.bullets = [];
 
+		this.enemies = [];
+
+		this.spawnDelay = this.getRandomInt(10,90);
+
 		//this.player.floors.forEach( function( f ) {
         //    this.addChild( f );
         //}, this.player );
@@ -151,7 +155,55 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	update: function(){
-		
+		if(this.spawnDelay < 0){
+			this.spawnEnemies(GameLayer.ENEMIES.GROUND_ALIEN);
+		}
+		this.spawnDelay--;
+	},
+	/**
+	 * Spawn enemies by each type
+	 * @return {Void}
+	 * @param {Number} enemyType = the type index of the enemy
+	 */
+	spawnEnemies: function(enemyType){
+		var GROUND_ALIEN = GameLayer.ENEMIES.GROUND_ALIEN;
+		var FLY_DRONE = GameLayer.ENEMIES.FLY_DRONE;
+		var DRIVER_ALIEN = GameLayer.ENEMIES.DRIVER_ALIEN;
+		switch(enemyType){
+			case GROUND_ALIEN :
+				var spawnDir = this.getRandomInt(-2,3);
+				if(spawnDir == 0){
+					this.spawnDelay = this.getRandomInt(10,90);
+					break;
+				}
+				var newEnemy = new GroundAlien(this,spawnDir);
+				this.enemies.push(newEnemy);
+				newEnemy.setFloor(this.floor);
+				this.addChild(newEnemy);
+				this.spawnDelay = this.getRandomInt(10,90);
+			break;
+		}
+	},
+	/**
+	 * Returns a random integer between min (included) and max (excluded)
+	 * Using Math.round() will give you a non-uniform distribution!
+	 * It returns any integer number from [min,max)
+	 * @return {Number}
+	 * @param {Number} min = the included minimum range
+	 * @param {Number} max = the excluded maximum range
+	 */
+	getRandomInt: function(min, max){
+  		return Math.floor(Math.random() * (max - min)) + min;
+	},
+	/**
+	 * Returns a random double between min (included) and max (excluded)
+	 * It returns any double number from [min,max)
+	 * @return {Number}
+	 * @param {Number} min = the included minimum range
+	 * @param {Number} max = the excluded maximum range
+	 */
+	getRandomDouble: function(min, max){
+  		return Math.random() * (max - min) + min;
 	}
 });
 
@@ -172,3 +224,12 @@ var StartScene = cc.Scene.extend({
 	}
 });
 
+/**
+  * The static final variables for enemy index for game layer
+  * @class GameLayer.ENEMIES
+  */
+GameLayer.ENEMIES = {
+	GROUND_ALIEN: 0,
+	FLY_DRONE: 1,
+	DRIVER_ALIEN: 2
+};

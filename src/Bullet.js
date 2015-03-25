@@ -48,6 +48,16 @@
 		if(this.hitFloor()){
 			this.game.removeChild(this);
 		}
+		var enemies = this.game.enemies;
+		for(var i = 0; i < enemies.length; i++){
+			if(this.hitEnemy(enemies[i])){
+				enemies[i].setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+				this.game.removeChild(enemies[i]);
+				this.game.removeChild(this);
+				break;
+			}
+		}
+		
 	},
 	/**
 	 * Check if the bullet hits the floor
@@ -57,5 +67,15 @@
 		var posRect = this.getBoundingBoxToWorld();
 		var floorPosRect = this.game.floor.getBoundingBoxToWorld();
 		return cc.rectIntersectsRect(posRect,floorPosRect);
+	},
+	/**
+	 * Check if the bullet hits the enemy
+	 * @return {Boolean}
+	 * @param {Any Enemy} enemy : the enemy hit
+	 */
+	hitEnemy: function(enemy){
+		var posRect = this.getBoundingBoxToWorld();
+		var enemyPosRect = enemy.getBoundingBoxToWorld();
+		return cc.rectIntersectsRect(posRect,enemyPosRect);
 	}
 });
