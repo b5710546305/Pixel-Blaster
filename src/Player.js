@@ -191,7 +191,7 @@ var Player = cc.Sprite.extend({
 	 */
     die: function(){
     	this.game.removeChild(this);
-    	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+    	this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
     	this.alive = false; //game over
     }
 });

@@ -30,6 +30,8 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.spawnDelay = this.getRandomInt(10,90);
 
+		this.spawnEnemies(GameLayer.ENEMIES.FLY_DRONE);
+
 		//this.player.floors.forEach( function( f ) {
         //    this.addChild( f );
         //}, this.player );
@@ -179,7 +181,13 @@ var GameLayer = cc.LayerColor.extend({
 				newEnemy.setFloor(this.floor);
 				this.addChild(newEnemy);
 				this.spawnDelay = this.getRandomInt(10,90);
-			break;
+				break;
+			case FLY_DRONE :
+				var newEnemy = new FlyDrone(this,0);
+				this.enemies.push(newEnemy);
+				this.addChild(newEnemy);
+				this.spawnDelay = this.getRandomInt(10,90);
+				break;
 		}
 	},
 	/**
