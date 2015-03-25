@@ -6,16 +6,28 @@
 	/**
 	 * Constructor
 	 * @param: {GameLayer} game = the current game
-	 * @param: {Number} dir = the direction to be spawned (-1 = left, 1 = right)
+	 * @param: {Number} spawnIndex = the place to be spawned (-1 = topLeft, 0 = ceiling, 1 = topRight)
 	 */
 	ctor: function(game,spawnIndex){
 		this._super();
 		this.initWithFile('res/images/fly_drone.png');
 
-		var spawnHeight = 500;
-		this.setPosition(new cc.Point(300,spawnHeight));
-
 		this.game = game;
+
+		var topLeft = -1;
+		var ceiling = 0;
+		var topRight = 1;
+		switch(spawnIndex){
+			case topLeft :
+				this.setPosition(new cc.Point(0,screenHeight-this.game.getRandomInt(0,100)));
+				break;
+			case topRight :
+				this.setPosition(new cc.Point(screenWidth,screenHeight-this.game.getRandomInt(0,100)));
+				break;
+			case ceiling :
+				this.setPosition(new cc.Point(this.game.getRandomInt(0,screenWidth),screenHeight));
+				break;
+		}
 
 		this.targetPlayer = this.game.player;
 

@@ -28,7 +28,13 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.enemies = [];
 
-		this.spawnDelay = this.getRandomInt(10,90);
+		this.spawnDelay = 0;
+		this.resetSpawnDelay();
+
+		this.gameTime = 0;
+
+		this.enemiesType = [GameLayer.ENEMIES.GROUND_ALIEN, GameLayer.ENEMIES.FLY_DRONE];
+		this.totalEnemiesType = this.enemiesType.length;
 
 		this.spawnEnemies(GameLayer.ENEMIES.FLY_DRONE);
 
@@ -155,8 +161,9 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		this.gameTime++;
 		if(this.spawnDelay < 0){
-			this.spawnEnemies(GameLayer.ENEMIES.GROUND_ALIEN);
+			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
 		}
 		this.spawnDelay--;
 	},
@@ -173,22 +180,28 @@ var GameLayer = cc.LayerColor.extend({
 			case GROUND_ALIEN :
 				var spawnDir = this.getRandomInt(-2,3);
 				if(spawnDir == 0){
-					this.spawnDelay = this.getRandomInt(10,90);
 					break;
 				}
 				var newEnemy = new GroundAlien(this,spawnDir);
 				this.enemies.push(newEnemy);
 				newEnemy.setFloor(this.floor);
 				this.addChild(newEnemy);
-				this.spawnDelay = this.getRandomInt(10,90);
 				break;
 			case FLY_DRONE :
-				var newEnemy = new FlyDrone(this,0);
+				var spawnIndex = this.getRandomInt(-1,2);
+				var newEnemy = new FlyDrone(this,spawnIndex);
 				this.enemies.push(newEnemy);
 				this.addChild(newEnemy);
-				this.spawnDelay = this.getRandomInt(10,90);
 				break;
 		}
+		this.resetSpawnDelay();
+	},
+	/**
+	 * Reset the spawn delay time randomly
+	 * @return {Void}
+	 */
+	resetSpawnDelay: function(){
+		this.spawnDelay = this.getRandomInt(15,60);
 	},
 	/**
 	 * Returns a random integer between min (included) and max (excluded)
