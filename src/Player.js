@@ -19,6 +19,8 @@ var Player = cc.Sprite.extend({
 
 		this.G = -1; //gravity
 
+		this.speed = 7;
+
 		this.ground = null;
 
 		this.floor = null;
@@ -77,11 +79,11 @@ var Player = cc.Sprite.extend({
 	 */
 	move: function(dir){
 		if(dir == 1){ //right
-			this.vx = 5;
+			this.vx = this.speed;
 			this.setScaleX(1);
 		}
 		if(dir == -1){ //left
-			this.vx = -5;
+			this.vx = -this.speed;
 			this.setScaleX(-1);
 		}
 	},
@@ -91,7 +93,7 @@ var Player = cc.Sprite.extend({
 	 */
 	jump: function(){
 		if (this.ground) {
-			this.vy = 8;
+			this.vy = 12;
 			this.ground = null;
 		}
 	},
