@@ -91,6 +91,7 @@
 	 * @return {Boolean}
 	 */
 	outOfBounds: function(){
+		var pos = this.getPosition();
 		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
 	}
 });
