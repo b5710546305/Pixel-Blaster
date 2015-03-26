@@ -13,7 +13,9 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.addKeyboardHandlers();
 		this.addMouseHandlers();
+
 		this.scheduleUpdate();
+		this.movingObjects = [];
 
 		this.player = new Player(this);
 		this.addChild(this.player,1);
@@ -32,11 +34,12 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.gameTime = 0;
 
-		this.speedMode = true; //for testing in slower computers
+		this.speedMode = false; //for testing in slower computers
 		this.movementUpdateDelay = 2; //for slowing down updating movement (for faster computers)
 		if(this.speedMode){
 			this.movementUpdateDelay = -1;
 		}
+
 
 		return true;
 	},
@@ -136,7 +139,7 @@ var GameLayer = cc.LayerColor.extend({
 		this.movementUpdateDelay--;
 	},
 	/**
-	 * Update the movement function
+	 * Update the game movement function
 	 * @return {Void}
 	 */
 	updateTasks: function(){
@@ -145,6 +148,10 @@ var GameLayer = cc.LayerColor.extend({
 			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
 		}
 		this.spawnDelay--;
+
+		for(var i = 0; i < this.movingObjects.length; i++){
+			this.movingObjects[i].update();
+		}
 
 		this.movementUpdateDelay = 2;
 	},

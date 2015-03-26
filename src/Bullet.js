@@ -33,7 +33,7 @@ var Bullet = cc.Sprite.extend({
 		this.vx = speed*owner.getScaleX()*Math.cos(angle*(Math.PI/180));
 		this.vy = speed*owner.getScaleY()*Math.sin(angle*(Math.PI/180));
 
-		this.scheduleUpdate();
+		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 		
 	},
 	/**
@@ -41,18 +41,6 @@ var Bullet = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	update: function(){
-		if(!this.game.speedMode && this.game.movementUpdateDelay < 0){
-			this.updateTasks();
-		} else if (this.game.speedMode){
-			this.updateTasks();
-		}
-		
-	},
-	/**
-	 * Update the movement function
-	 * @return {Void}
-	 */
-	updateTasks: function(){
 		var pos = this.getPosition();
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
@@ -74,6 +62,7 @@ var Bullet = cc.Sprite.extend({
 				this.game.removeChild(this);
 			}
 		}
+		
 	},
 	/**
 	 * Check if the bullet hits the floora
