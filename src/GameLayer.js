@@ -32,7 +32,7 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.gameTime = 0;
 
-		this.speedMode = false; //for testing in slower computers
+		this.speedMode = true; //for testing in slower computers
 		this.movementUpdateDelay = 2; //for slowing down updating movement (for faster computers)
 		if(this.speedMode){
 			this.movementUpdateDelay = -1;
