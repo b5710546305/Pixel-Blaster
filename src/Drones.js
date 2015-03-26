@@ -2,7 +2,7 @@
   * The first kind of drone that flies into player
   * @class FlyDrone
   */
-  var FlyDrone = cc.Sprite.extend({
+var FlyDrone = cc.Sprite.extend({
 	/**
 	 * Constructor
 	 * @param: {GameLayer} game = the current game
@@ -103,10 +103,10 @@
 	 * Get out of the game
 	 * @return {Void}
 	 */
-    die: function(){
-    	this.game.removeChild(this);
-    	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-    },
+	die: function(){
+		this.game.removeChild(this);
+		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+	},
 	/**
 	 * Check if the fly-drone flew off the screen
 	 * @return {Boolean}

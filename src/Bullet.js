@@ -2,7 +2,7 @@
   * Bullet that fires from robot, drones and aliens
   * @class Bullet
   */
-  var Bullet = cc.Sprite.extend({
+var Bullet = cc.Sprite.extend({
 	/**
 	 * Constructor
 	 * @param: {Player,Aliens,Drones} owner = the current owner of the bullet, can be both player and enemies
@@ -13,7 +13,6 @@
 		this._super();
 
 		this.owner = owner;
-
 		this.game = owner.game;
 
 		if(this.owner == this.game.player){
@@ -21,17 +20,9 @@
 		} else {
 			this.initWithFile('res/images/alien_bullet.png');
 		}
-		
-
-		
-
 		this.setPosition(new cc.Point(owner.x,owner.y-4));
 
-		//if(!owner.faceUp){
-			this.setScaleX(owner.getScaleX());
-			//this.vx = 10*owner.getScaleX(); //horizonal speed
-			//this.vy = 0; //vertical speed
-		
+		this.setScaleX(owner.getScaleX());
 		if(owner.getScaleX() == -1){
 			this.setRotation(angle);
 		} else {
@@ -51,7 +42,6 @@
 	 */
 	update: function(){
 		var pos = this.getPosition();
-		//this.vy += this.G;
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
 		if(this.hitFloor()||this.outOfBounds()){
@@ -72,7 +62,6 @@
 				this.game.removeChild(this);
 			}
 		}
-		
 		
 	},
 	/**

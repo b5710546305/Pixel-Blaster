@@ -21,7 +21,6 @@ var GroundAlien = cc.Sprite.extend({
 			this.setPosition(new cc.Point(0,spawnHeight));
 		else
 			this.setPosition(new cc.Point(screenWidth,spawnHeight));
-
 		if(dir < 0)
 			this.setScaleX((dir/dir))
 		else
@@ -32,23 +31,14 @@ var GroundAlien = cc.Sprite.extend({
 			this.vx = 4*((dir/dir)); //horizonal speed to right
 		else
 			this.vx = 4*(-(dir/dir)); //horizonal speed to left
-		
 		this.vy = 0; //vertical speed
-
 		this.G = -1; //gravity
 
 		this.ground = null;
-
 		this.floor = null;
-
 		this.game = game;
 
 		this.shootDelay = this.game.getRandomInt(20,80);
-
-		//this.aimingRotation = 0;
-
-		//this.faceUp = false;
-
 		this.scheduleUpdate();
 		
 	},
@@ -96,20 +86,20 @@ var GroundAlien = cc.Sprite.extend({
 	 */
 	handleCollision: function(oldRect, newRect){
 		if ( this.ground ) {
-            if ( !this.ground.onTop( newRect ) ) {
-                this.ground = null;
-            }
-        } else {
-            if ( this.vy < 0 ) {
-                var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
-                
-                if ( topFloor ) {
-                    this.ground = topFloor;
-                    this.y = topFloor.getTopY()+(this.height/2);
-                    this.vy = 0;
-                }
-            }
-        }
+			if ( !this.ground.onTop( newRect ) ) {
+				this.ground = null;
+			}
+		} else {
+			if ( this.vy < 0 ) {
+				var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
+				
+				if ( topFloor ) {
+					this.ground = topFloor;
+					this.y = topFloor.getTopY()+(this.height/2);
+					this.vy = 0;
+				}
+			}
+		}
 	},
 	/**
 	 * Find the floor to stand on
@@ -119,41 +109,40 @@ var GroundAlien = cc.Sprite.extend({
 	 * @return {Floor}
 	 */
 	findTopFloor: function( floor, oldRect, newRect ) {
-        var topFloor = null;
-        var topFloorY = -1;
+		var topFloor = null;
+		var topFloorY = -1;
 
-            if ( floor.hitTop( oldRect, newRect ) ) {
-                if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
-                    topFloorY = floor.getTopY();
-                    topFloor = floor;
-                }
-            }
+		if ( floor.hitTop( oldRect, newRect ) ) {
+			if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
+				topFloorY = floor.getTopY();
+				topFloor = floor;
+			}
+		}
 
-        
-        return topFloor;
-    },
-    /**
+		return topFloor;
+	},
+	/**
 	 * Shoot in randomly generated delay time
 	 * @return {Void}
 	 */
-    shoot: function(){
-    	var shotSpeed = 10;
-    	var angle = 0;
-    	if(this.shootDelay < 0){
+	shoot: function(){
+		var shotSpeed = 10;
+		var angle = 0;
+		if(this.shootDelay < 0){
 			var bullet = new Bullet(this,shotSpeed,angle);
 			this.game.addChild(bullet);
 			this.game.bullets.push(bullet);
 			this.shootDelay = this.game.getRandomInt(20,80);
 		}
-    },
-    /**
+	},
+	/**
 	 * Get out of the game
 	 * @return {Void}
 	 */
-    die: function(){
-    	this.game.removeChild(this);
-    	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-    }
+	die: function(){
+		this.game.removeChild(this);
+		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+	}
 });
 
 
@@ -181,7 +170,6 @@ var DriverAlien = cc.Sprite.extend({
 			this.setPosition(new cc.Point(0,spawnHeight));
 		else
 			this.setPosition(new cc.Point(screenWidth,spawnHeight));
-
 		if(dir < 0)
 			this.setScaleX((dir/dir))
 		else
@@ -192,23 +180,14 @@ var DriverAlien = cc.Sprite.extend({
 			this.vx = 1*((dir/dir)); //horizonal speed to right
 		else
 			this.vx = 1*(-(dir/dir)); //horizonal speed to left
-		
 		this.vy = 0; //vertical speed
-
 		this.G = -1; //gravity
-
 		this.accelX = 0; //acceleration
 
 		this.ground = null;
-
 		this.floor = null;
 
 		this.game = game;
-
-		//this.aimingRotation = 0;
-
-		//this.faceUp = false;
-
 		this.scheduleUpdate();
 		
 	},
@@ -256,20 +235,20 @@ var DriverAlien = cc.Sprite.extend({
 	 */
 	handleCollision: function(oldRect, newRect){
 		if ( this.ground ) {
-            if ( !this.ground.onTop( newRect ) ) {
-                this.ground = null;
-            }
-        } else {
-            if ( this.vy < 0 ) {
-                var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
-                
-                if ( topFloor ) {
-                    this.ground = topFloor;
-                    this.y = topFloor.getTopY()+(this.height/2);
-                    this.vy = 0;
-                }
-            }
-        }
+			if ( !this.ground.onTop( newRect ) ) {
+				this.ground = null;
+			}
+		} else {
+			if ( this.vy < 0 ) {
+				var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
+				
+				if ( topFloor ) {
+					this.ground = topFloor;
+					this.y = topFloor.getTopY()+(this.height/2);
+					this.vy = 0;
+				}
+			}
+		}
 	},
 	/**
 	 * Find the floor to stand on
@@ -279,55 +258,54 @@ var DriverAlien = cc.Sprite.extend({
 	 * @return {Floor}
 	 */
 	findTopFloor: function( floor, oldRect, newRect ) {
-        var topFloor = null;
-        var topFloorY = -1;
+		var topFloor = null;
+		var topFloorY = -1;
 
-            if ( floor.hitTop( oldRect, newRect ) ) {
-                if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
-                    topFloorY = floor.getTopY();
-                    topFloor = floor;
-                }
-            }
+		if ( floor.hitTop( oldRect, newRect ) ) {
+			if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
+				topFloorY = floor.getTopY();
+				topFloor = floor;
+			}
+		}
 
-        
-        return topFloor;
-    },
-    /**
+		return topFloor;
+	},
+	/**
 	 * Increase the speed into player's direction from the driver alien
 	 * @return {Void}
 	 */
-    setAccelerationIntoPlayer: function(){
-    	var targetPlayer = this.game.player;
-    	if (this.game.player.alive){ //bash into player while player is alive
-    		if(this.game.player.x - this.x < 0) {// player is at left
-    			this.accelX = -1;
-    		}
-    		else if(this.game.player.x - this.x > 0) {// player is at right
-    			this.accelX = 1;
-    		}
-    	} else { 
-    		this.accelX = this.getScaleX(); //just move away after player died
-    	}
-    	
-    },
-    /**
+	setAccelerationIntoPlayer: function(){
+		var targetPlayer = this.game.player;
+		if (this.game.player.alive){ //bash into player while player is alive
+			if(this.game.player.x - this.x < 0) {// player is at left
+				this.accelX = -1;
+			}
+			else if(this.game.player.x - this.x > 0) {// player is at right
+				this.accelX = 1;
+			}
+		} else { 
+			this.accelX = this.getScaleX(); //just move away after player died
+		}
+		
+	},
+	/**
 	 * Changes the driver alien's facing direction according to current speed at x
 	 * @return {Void}
 	 */
-    changeFacingDirectionBySpeed: function(){
-    	if(this.vx > 0){
-    		this.setScaleX(1);
-    	}
-    	else if (this.vx < 0){
-    		this.setScaleX(-1);
-    	}
-    },
-    /**
+	changeFacingDirectionBySpeed: function(){
+		if(this.vx > 0){
+			this.setScaleX(1);
+		}
+		else if (this.vx < 0){
+			this.setScaleX(-1);
+		}
+	},
+	/**
 	 * Get out of the game
 	 * @return {Void}
 	 */
-    die: function(){
-    	this.game.removeChild(this);
-    	this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-    }
+	die: function(){
+		this.game.removeChild(this);
+		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+	}
 });

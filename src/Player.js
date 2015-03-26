@@ -16,30 +16,23 @@ var Player = cc.Sprite.extend({
 
 		this.vx = 0; //horizonal speed
 		this.vy = 0; //vertical speed
-
 		this.G = -1; //gravity
-
 		this.speed = 7;
 
 		this.ground = null;
-
 		this.floor = null;
 
 		this.game = game;
-
 		this.alive = true;
 
 		this.shootDelay = 3;
-
 		this.bulletSpeed = 30;
 
 		//this.gun = cc.Sprite.create('res/images/player_gun.png');
 		//this.gun.setPosition(new cc.Point(this.width-9,this.height-21));
 		//this.addChild(this.gun);
 		//this.gun.angle = 0;
-
 		//this.aimingRotation = 0;
-
 		//this.faceUp = false;
 
 		this.scheduleUpdate();
@@ -53,13 +46,12 @@ var Player = cc.Sprite.extend({
 		/**Before Moves*/
 		var pos = this.getPosition();
 		var posRect = this.getPlayerRect();
-		//this.vy += this.G;
+
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
-		//this.autoDecelerateX();
-		//if(!this.collisionBottomCheck()) {
-			if(pos.y > screenHeight){
-				this.die(); //die by falling off
-			}
+
+		if(pos.y > screenHeight){
+			this.die(); //die by falling off
+		}
 
 		//Die when hit an enemy
 		var enemies = this.game.enemies;
@@ -68,16 +60,12 @@ var Player = cc.Sprite.extend({
 				this.die();
 			}
 		}
-			
-		//this.gun.setRotation(this.gun.angle);
+
 		this.shootDelay--;
 
-			if (this.ground == null) {
-				this.vy += this.G;
-			}
-			//this.canJump = false;
-		//}
-		//else (this.canJump = true;)
+		if (this.ground == null) {
+			this.vy += this.G;
+		}
 
 		/**After Moves*/
 		var newPos = this.getPosition();
@@ -123,18 +111,18 @@ var Player = cc.Sprite.extend({
 	 * Get the rectangle that is for player's collision checking in world
 	 * @return {cc.Rect}
 	 */
-    getPlayerRect: function() {
-        var spriteRect = this.getBoundingBoxToWorld();
-        var spritePos = this.getPosition();
+	getPlayerRect: function() {
+		var spriteRect = this.getBoundingBoxToWorld();
+		var spritePos = this.getPosition();
 
-        var dX = this.x - spritePos.x;
-        var dY = this.y - spritePos.y;
-        return cc.rect( spriteRect.x, //+ dX,
-                        spriteRect.y, //+ dY,
-                        spriteRect.width,
-                        spriteRect.height );
-    },
-    /**
+		var dX = this.x - spritePos.x;
+		var dY = this.y - spritePos.y;
+		return cc.rect( spriteRect.x, //+ dX,
+						spriteRect.y, //+ dY,
+						spriteRect.width,
+						spriteRect.height );
+	},
+	/**
 	 * Check for collision
 	 * @param: {cc.Rect} oldRect = the old bounding rectangle before moving
 	 * @param: {cc.Rect} newRect = the next bounding rectangle after moves
@@ -142,20 +130,20 @@ var Player = cc.Sprite.extend({
 	 */
 	handleCollision: function(oldRect, newRect){
 		if ( this.ground ) {
-            if ( !this.ground.onTop( newRect ) ) {
-                this.ground = null;
-            }
-        } else {
-            if ( this.vy < 0 ) {
-                var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
-                
-                if ( topFloor ) {
-                    this.ground = topFloor;
-                    this.y = topFloor.getTopY()+(this.height/2);
-                    this.vy = 0;
-                }
-            }
-        }
+			if ( !this.ground.onTop( newRect ) ) {
+				this.ground = null;
+			}
+		} else {
+			if ( this.vy < 0 ) {
+				var topFloor = this.findTopFloor( this.floor, oldRect, newRect );
+				
+				if ( topFloor ) {
+					this.ground = topFloor;
+					this.y = topFloor.getTopY()+(this.height/2);
+					this.vy = 0;
+				}
+			}
+		}
 	},
 	/**
 	 * Find the floor to stand on
@@ -165,20 +153,19 @@ var Player = cc.Sprite.extend({
 	 * @return {Floor}
 	 */
 	findTopFloor: function( floor, oldRect, newRect ) {
-        var topFloor = null;
-        var topFloorY = -1;
+		var topFloor = null;
+		var topFloorY = -1;
 
-            if ( floor.hitTop( oldRect, newRect ) ) {
-                if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
-                    topFloorY = floor.getTopY();
-                    topFloor = floor;
-                }
-            }
+		if ( floor.hitTop( oldRect, newRect ) ) {
+			if ( floor.getTopY() >= topFloorY ) { //getTopY() = 70
+				topFloorY = floor.getTopY();
+				topFloor = floor;
+			}
+		}
 
-        
-        return topFloor;
-    },
-    /**
+		return topFloor;
+	},
+	/**
 	 * Mutator of prefered floor
 	 * @param: {Floor} floor = a floor to redefine
 	 * @return {Void}
@@ -205,18 +192,18 @@ var Player = cc.Sprite.extend({
 	 * @param: {Aliens, Drones} enemy = the enemy to check collision
 	 * @return {Boolean}
 	 */
-	 collideWithEnemy: function(enemy){
-	 	var posRect = this.getBoundingBoxToWorld();
-	 	var enemyPosRect = enemy.getBoundingBoxToWorld();
-	 	return cc.rectIntersectsRect(posRect,enemyPosRect);
-	 },
+	collideWithEnemy: function(enemy){
+		var posRect = this.getBoundingBoxToWorld();
+		var enemyPosRect = enemy.getBoundingBoxToWorld();
+		return cc.rectIntersectsRect(posRect,enemyPosRect);
+	},
 	/**
 	 * Get out of the game
 	 * @return {Void}
 	 */
-    die: function(){
-    	this.game.removeChild(this);
-    	this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-    	this.alive = false; //game over
-    }
+	die: function(){
+		this.game.removeChild(this);
+		this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+		this.alive = false; //game over
+	}
 });
