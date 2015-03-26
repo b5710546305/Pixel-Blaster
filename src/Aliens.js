@@ -26,11 +26,12 @@ var GroundAlien = cc.Sprite.extend({
 		else
 			this.setScaleX(-(dir/dir))
 		
+		this.speed = 4;
 
 		if(dir < 0)
-			this.vx = 4*((dir/dir)); //horizonal speed to right
+			this.vx = this.speed*((dir/dir)); //horizonal speed to right
 		else
-			this.vx = 4*(-(dir/dir)); //horizonal speed to left
+			this.vx = this.speed*(-(dir/dir)); //horizonal speed to left
 		this.vy = 0; //vertical speed
 		this.G = -1; //gravity
 
@@ -47,6 +48,18 @@ var GroundAlien = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		if(!this.game.speedMode && this.game.movementUpdateDelay < 0){
+			this.updateTasks();
+		}
+		if (this.game.speedMode){
+			this.updateTasks();
+		}
+	},
+	/**
+	 * Update the movement function
+	 * @return {Void}
+	 */
+	updateTasks: function(){
 		/**Before Moves*/
 		var pos = this.getPosition();
 		var posRect = this.getBoundingBoxToWorld();
@@ -60,9 +73,9 @@ var GroundAlien = cc.Sprite.extend({
 		this.shoot();
 		this.shootDelay--;
 
-			if (this.ground == null) {
-				this.vy += this.G;
-			}
+		if (this.ground == null) {
+			this.vy += this.G;
+		}
 
 		/**After Moves*/
 		var newPos = this.getPosition();
@@ -196,6 +209,17 @@ var DriverAlien = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		if(!this.game.speedMode && this.game.movementUpdateDelay < 0){
+			this.updateTasks();
+		} else if (this.game.speedMode){
+			this.updateTasks();
+		}
+	},
+	/**
+	 * Update the movement function
+	 * @return {Void}
+	 */
+	updateTasks: function(){
 		/**Before Moves*/
 		var pos = this.getPosition();
 		var posRect = this.getBoundingBoxToWorld();
@@ -209,9 +233,9 @@ var DriverAlien = cc.Sprite.extend({
 			this.die(); //die by falling off
 		}
 
-			if (this.ground == null) {
-				this.vy += this.G;
-			}
+		if (this.ground == null) {
+			this.vy += this.G;
+		}
 
 		/**After Moves*/
 		var newPos = this.getPosition();

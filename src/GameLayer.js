@@ -32,6 +32,12 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.gameTime = 0;
 
+		this.speedMode = false; //for testing in slower computers
+		this.movementUpdateDelay = 2; //for slowing down updating movement (for faster computers)
+		if(this.speedMode){
+			this.movementUpdateDelay = -1;
+		}
+
 		return true;
 	},
 	/**
@@ -47,6 +53,12 @@ var GameLayer = cc.LayerColor.extend({
 		}
 		if(e == cc.KEY.w){ //jump up
 			this.player.jump();
+		}
+		if(e == cc.KEY.space){ //speed mode
+			if(this.speedMode)
+				this.speedMode = false;
+			else 
+				this.speedMode = true;
 		}
 	},
 	/**
@@ -116,11 +128,25 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		if(!this.speedMode && this.movementUpdateDelay < 0){
+			this.updateTasks();
+		} else if (this.speedMode){
+			this.updateTasks();
+		}
+		this.movementUpdateDelay--;
+	},
+	/**
+	 * Update the movement function
+	 * @return {Void}
+	 */
+	updateTasks: function(){
 		if(this.player.alive){this.gameTime++;}
 		if(this.spawnDelay < 0 && this.player.alive){
 			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
 		}
 		this.spawnDelay--;
+
+		this.movementUpdateDelay = 2;
 	},
 	/**
 	 * Spawn enemies by each type

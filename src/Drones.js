@@ -47,6 +47,17 @@ var FlyDrone = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		if(!this.game.speedMode && this.game.movementUpdateDelay < 0){
+			this.updateTasks();
+		} else if (this.game.speedMode){
+			this.updateTasks();
+		}
+	},
+	/**
+	 * Update the movement function
+	 * @return {Void}
+	 */
+	updateTasks: function(){
 		var pos = this.getPosition();
 		var posRect = this.getBoundingBoxToWorld();
 
@@ -57,7 +68,6 @@ var FlyDrone = cc.Sprite.extend({
 		if(this.outOfBounds()){
 			this.game.removeChild(this);
 		}
-
 	},
 	/**
 	 * Make the direction of the drone's velocity been set to be towards player all the time

@@ -14,16 +14,16 @@ var Player = cc.Sprite.extend({
 
 		this.setPosition(new cc.Point(screenWidth/2,100));
 
-		this.vx = 0; //horizonal speed
-		this.vy = 0; //vertical speed
-		this.G = -1; //gravity
-		this.speed = 7;
-
 		this.ground = null;
 		this.floor = null;
 
 		this.game = game;
 		this.alive = true;
+
+		this.vx = 0; //horizonal speed
+		this.vy = 0; //vertical speed
+		this.G = -1; //gravity
+		this.speed = 7;
 
 		this.shootDelay = 3;
 		this.bulletSpeed = 30;
@@ -43,6 +43,17 @@ var Player = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	update: function(){
+		if(!this.game.speedMode && this.game.movementUpdateDelay < 0){
+			this.updateTasks();
+		} else if (this.game.speedMode){
+			this.updateTasks();
+		}
+	},
+	/**
+	 * Update the movement function
+	 * @return {Void}
+	 */
+	updateTasks: function(){
 		/**Before Moves*/
 		var pos = this.getPosition();
 		var posRect = this.getPlayerRect();
@@ -50,7 +61,7 @@ var Player = cc.Sprite.extend({
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
 		if(pos.y > screenHeight){
-			this.die(); //die by falling off
+		this.die(); //die by falling off
 		}
 
 		//Die when hit an enemy
@@ -72,7 +83,6 @@ var Player = cc.Sprite.extend({
 		var newPosRect = this.getPlayerRect();
 
 		this.handleCollision( posRect, newPosRect );
-
 	},
 	/**
 	 * Slow down movement in X axis to 0
