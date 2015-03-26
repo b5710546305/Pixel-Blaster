@@ -52,14 +52,14 @@ var Bullet = cc.Sprite.extend({
 			for(var i = 0; i < enemies.length; i++){
 				if(this.hitEnemy(enemies[i])){
 					enemies[i].die();
-					this.game.removeChild(this);
+					this.beRemoved();
 					break;
 				}
 			}
 		} else {
 			if(this.hitEnemy(this.game.player)){
 				this.game.player.die();
-				this.game.removeChild(this);
+				this.beRemoved();
 			}
 		}
 		
@@ -82,6 +82,14 @@ var Bullet = cc.Sprite.extend({
 		var posRect = this.getBoundingBoxToWorld();
 		var enemyPosRect = enemy.getBoundingBoxToWorld();
 		return cc.rectIntersectsRect(posRect,enemyPosRect);
+	},
+	/**
+	 * Get out of the game
+	 * @return {Void}
+	 */
+	beRemoved: function(){
+		this.game.removeChild(this);
+		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 	},
 	/**
 	 * Check if the bullet flew off the screen
