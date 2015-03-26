@@ -36,15 +36,6 @@ var GameLayer = cc.LayerColor.extend({
 		this.enemiesType = [GameLayer.ENEMIES.GROUND_ALIEN, GameLayer.ENEMIES.FLY_DRONE, GameLayer.ENEMIES.DRIVER_ALIEN];
 		this.totalEnemiesType = this.enemiesType.length;
 
-		this.spawnEnemies(GameLayer.ENEMIES.FLY_DRONE);
-
-		//this.player.floors.forEach( function( f ) {
-        //    this.addChild( f );
-        //}, this.player );
-
-		this.bulletTest = cc.Sprite.create("res/images/bullet.png");		
-     	this.addChild(this.bulletTest);
-
 		return true;
 	},
 	/**
@@ -154,7 +145,11 @@ var GameLayer = cc.LayerColor.extend({
 	 */
 	 onMouseMoved:function(event){
 		var location = event.getLocation();
-		this.bulletTest.setPosition(location);
+		if (cc.rectContainsPoint(this.getBoundingBox(), location)) {
+			//cc.canvas.style.cursor = "pointer";
+		} else {
+			//cc.canvas.style.cursor = "default";
+		}
 	},
 	/**
 	 * Update the game scene

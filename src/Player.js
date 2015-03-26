@@ -33,6 +33,11 @@ var Player = cc.Sprite.extend({
 
 		this.bulletSpeed = 30;
 
+		//this.gun = cc.Sprite.create('res/images/player_gun.png');
+		//this.gun.setPosition(new cc.Point(this.width-9,this.height-21));
+		//this.addChild(this.gun);
+		//this.gun.angle = 0;
+
 		//this.aimingRotation = 0;
 
 		//this.faceUp = false;
@@ -64,7 +69,7 @@ var Player = cc.Sprite.extend({
 			}
 		}
 			
-
+		//this.gun.setRotation(this.gun.angle);
 		this.shootDelay--;
 
 			if (this.ground == null) {
@@ -79,6 +84,7 @@ var Player = cc.Sprite.extend({
 		var newPosRect = this.getPlayerRect();
 
 		this.handleCollision( posRect, newPosRect );
+
 	},
 	/**
 	 * Slow down movement in X axis to 0

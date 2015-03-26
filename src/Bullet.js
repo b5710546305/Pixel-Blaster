@@ -11,11 +11,19 @@
 	 */
 	ctor: function(owner,speed,angle){
 		this._super();
-		this.initWithFile('res/images/bullet.png');
 
 		this.owner = owner;
 
 		this.game = owner.game;
+
+		if(this.owner == this.game.player){
+			this.initWithFile('res/images/bullet.png');
+		} else {
+			this.initWithFile('res/images/alien_bullet.png');
+		}
+		
+
+		
 
 		this.setPosition(new cc.Point(owner.x,owner.y-4));
 
