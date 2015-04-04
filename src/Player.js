@@ -29,6 +29,16 @@ var Player = cc.Sprite.extend({
 		this.bulletSpeed = 30;
 		
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
+
+		this.jetpackOn = false;
+		this.jetpackTimer = 100;
+
+		this.shieldPower = 0;
+
+		this.jetpack = cc.Sprite.create('res/images/player_jetpack.png');
+		this.jetpackFire = cc.Sprite.create('res/images/player_jetpack_fire.png');
+		this.jetpack.setPosition(new cc.Point(this.width/2,this.height/2));
+		this.jetpackFire.setPosition(new cc.Point(this.width/2,this.height/2));
 		
 	},
 	/**
@@ -42,7 +52,7 @@ var Player = cc.Sprite.extend({
 
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
-		if(pos.y > screenHeight){
+		if(pos.y < 0){
 			this.die(); //die by falling off
 		}
 
@@ -50,11 +60,16 @@ var Player = cc.Sprite.extend({
 		var enemies = this.game.enemies;
 		for(var i = 0; i < enemies.length; i++){
 			if(this.collideWithEnemy(enemies[i])){
-				this.die();
+				if(this.shieldPower > 0){
+					enemies[i].die();
+					//this.takeDamage();
+				}
+				else {this.die();}
 			}
 		}
 
 		this.shootDelay--;
+		this.jetpackTimer --;
 
 		if (this.ground == null) {
 			this.vy += this.G;
@@ -95,7 +110,7 @@ var Player = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	jump: function(){
-		if (this.ground) {
+		if (this.ground && !this.jetpackOn) {
 			this.vy = 12;
 			this.ground = null;
 		}
@@ -191,12 +206,27 @@ var Player = cc.Sprite.extend({
 		return cc.rectIntersectsRect(posRect,enemyPosRect);
 	},
 	/**
+	 * Jetpack goes upward
+	 * @return {Void}
+	 */
+	jetpackThrust: function(dir){
+		if(this.jetpackOn){
+			if(dir == 1){ //up
+				this.vy = this.speed-1;
+			}
+			if(dir == -1 && this.ground == null){ //down
+				this.vy = -(this.speed-1);
+			}
+		}
+	},
+	/**
 	 * Get out of the game
 	 * @return {Void}
 	 */
 	die: function(){
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
-		this.alive = false; //game over
+		this.alive = false; //loose life
+		this.game.life--;
 	}
 });

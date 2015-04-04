@@ -45,7 +45,7 @@ var Bullet = cc.Sprite.extend({
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
 		if(this.hitFloor()||this.outOfBounds()){
-			this.game.removeChild(this);
+			this.beRemoved();
 		}
 		if(this.owner == this.game.player){
 			var enemies = this.game.enemies;
@@ -58,7 +58,11 @@ var Bullet = cc.Sprite.extend({
 			}
 		} else {
 			if(this.hitEnemy(this.game.player)){
-				this.game.player.die();
+				if(this.game.player.shieldPower > 0){
+					this.game.player.takeDamage();
+				}else{
+					this.game.player.die();
+				}
 				this.beRemoved();
 			}
 		}
@@ -89,7 +93,7 @@ var Bullet = cc.Sprite.extend({
 	 */
 	beRemoved: function(){
 		this.game.removeChild(this);
-		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else something may disappear in the place the bullet vanishes)
 	},
 	/**
 	 * Check if the bullet flew off the screen

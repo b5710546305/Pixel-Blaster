@@ -53,7 +53,7 @@ var GroundAlien = cc.Sprite.extend({
 
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
-		if(pos.y > screenHeight){
+		if(pos.y > 0){
 			this.die(); //die by falling off
 		}
 
@@ -205,7 +205,7 @@ var DriverAlien = cc.Sprite.extend({
 		this.vx += this.accelX; //speed increase, break
 		this.changeFacingDirectionBySpeed();
 
-		if(pos.y > screenHeight){
+		if(pos.y < 0){
 			this.die(); //die by falling off
 		}
 

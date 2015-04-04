@@ -19,9 +19,13 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.player = new Player(this);
 		this.addChild(this.player,1);
+
 		this.floor = new Floor();
 		this.addChild(this.floor);
 		this.player.setFloor(this.floor);
+
+		this.life = 4;
+		this.gameOver = false;
 
 		this.bullets = [];
 		this.enemies = [];
@@ -44,6 +48,15 @@ var GameLayer = cc.LayerColor.extend({
 		return true;
 	},
 	/**
+	 * Revive the player back to the game
+	 * @return {Void}
+	 */
+	respawnPlayer: function(){
+		this.player = new Player(this);
+		this.addChild(this.player,1);
+		this.player.setFloor(this.floor);
+	},
+	/**
 	 * Function for press key each time
 	 * @return {Void}
 	 */
@@ -56,12 +69,19 @@ var GameLayer = cc.LayerColor.extend({
 		}
 		if(e == cc.KEY.w){ //jump up
 			this.player.jump();
+			this.player.jetpackThrust(1);
+		}
+		if(e == cc.KEY.s){ //duck
+			this.player.jetpackThrust(-1);
 		}
 		if(e == cc.KEY.space){ //speed mode
 			if(this.speedMode)
 				this.speedMode = false;
 			else 
 				this.speedMode = true;
+		}
+		if(e == cc.KEY.enter){ 
+			
 		}
 	},
 	/**
@@ -137,6 +157,14 @@ var GameLayer = cc.LayerColor.extend({
 			this.updateTasks();
 		}
 		this.movementUpdateDelay--;
+
+		if(!this.player.alive){
+			if(this.life >= 0){
+				this.respawnPlayer();
+			} else {
+				this.gameOver();
+			}
+		}
 	},
 	/**
 	 * Update the game movement function
@@ -200,6 +228,13 @@ var GameLayer = cc.LayerColor.extend({
 	 */
 	resetSpawnDelay: function(){
 		this.spawnDelay = this.getRandomInt(15,60);
+	},
+	/**
+	 * End the game
+	 * @return {Void}
+	 */
+	gameOver: function(){
+		this.gameOver = true;
 	},
 	/**
 	 * Returns a random integer between min (included) and max (excluded)

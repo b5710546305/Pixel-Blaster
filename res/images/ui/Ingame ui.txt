@@ -1,0 +1,4 @@
+Life : 4
+Level : 1
+Score : 000000
+Items : ...
