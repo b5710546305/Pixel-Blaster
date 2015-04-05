@@ -24,6 +24,7 @@ var Player = cc.Sprite.extend({
 
 		this.game = game;
 		this.alive = true;
+		this.deadDelay = 20;
 
 		this.shootDelay = 3;
 		this.bulletSpeed = 30;
@@ -80,6 +81,23 @@ var Player = cc.Sprite.extend({
 		var newPosRect = this.getPlayerRect();
 
 		this.handleCollision( posRect, newPosRect );
+
+		if(!this.alive && this.deadDelay > 0){
+			this.deadDelay--;
+		}
+
+		if(this.atEdgeOrOutOfBounds()){
+			if(pos.x <= 0){
+				this.setPositionX(0);
+			} else if (pos.x >= screenWidth){
+				this.setPositionX(screenWidth);
+			}
+			if (pos.y <= 0){
+				this.setPositionY(0);
+			} else if (pos.y >= screenHeight){
+				this.setPositionY(screenHeights);
+			}
+		}
 
 	},
 	/**
@@ -227,6 +245,14 @@ var Player = cc.Sprite.extend({
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 		this.alive = false; //loose life
-		this.game.life--;
+		if(this.deadDelay == 20) {this.game.life--;}
+	},
+	/**
+	 * Check if the fly-drone flew off the screen
+	 * @return {Boolean}
+	 */
+	atEdgeOrOutOfBounds: function(){
+		var pos = this.getPosition();
+		return pos.x <= 0||pos.x >= screenWidth||pos.y <= 0||pos.y >= screenHeight;
 	}
 });

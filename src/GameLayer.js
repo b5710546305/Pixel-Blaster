@@ -25,7 +25,7 @@ var GameLayer = cc.LayerColor.extend({
 		this.player.setFloor(this.floor);
 
 		this.life = 4;
-		this.gameOver = false;
+		this.gameIsOver = false;
 
 		this.bullets = [];
 		this.enemies = [];
@@ -55,6 +55,8 @@ var GameLayer = cc.LayerColor.extend({
 		this.player = new Player(this);
 		this.addChild(this.player,1);
 		this.player.setFloor(this.floor);
+		this.player.alive = true;
+		this.player.deadDelay = 20;
 	},
 	/**
 	 * Function for press key each time
@@ -159,9 +161,9 @@ var GameLayer = cc.LayerColor.extend({
 		this.movementUpdateDelay--;
 
 		if(!this.player.alive){
-			if(this.life >= 0){
+			if(this.life >= 0 && this.player.deadDelay < 0){
 				this.respawnPlayer();
-			} else {
+			} else if (this.life < 0){
 				this.gameOver();
 			}
 		}
@@ -234,7 +236,7 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	gameOver: function(){
-		this.gameOver = true;
+		this.gameIsOver = true;
 	},
 	/**
 	 * Returns a random integer between min (included) and max (excluded)

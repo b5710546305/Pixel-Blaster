@@ -69,6 +69,10 @@ var GroundAlien = cc.Sprite.extend({
 		var newPosRect = this.getBoundingBoxToWorld();
 
 		this.handleCollision( posRect, newPosRect );
+
+		if(this.outOfBounds()){
+			this.game.removeChild(this);
+		}
 	},
 	/**
 	 * Mutator of prefered floor
@@ -142,6 +146,14 @@ var GroundAlien = cc.Sprite.extend({
 	die: function(){
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+	},
+	/**
+	 * Check if the fly-drone flew off the screen
+	 * @return {Boolean}
+	 */
+	outOfBounds: function(){
+		var pos = this.getPosition();
+		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
 	}
 });
 
@@ -218,6 +230,10 @@ var DriverAlien = cc.Sprite.extend({
 		var newPosRect = this.getBoundingBoxToWorld();
 
 		this.handleCollision( posRect, newPosRect );
+
+		if(this.outOfBounds()){
+			this.game.removeChild(this);
+		}
 	},
 	/**
 	 * Mutator of prefered floor
@@ -307,5 +323,13 @@ var DriverAlien = cc.Sprite.extend({
 	die: function(){
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
+	},
+	/**
+	 * Check if the fly-drone flew off the screen
+	 * @return {Boolean}
+	 */
+	outOfBounds: function(){
+		var pos = this.getPosition();
+		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
 	}
 });
