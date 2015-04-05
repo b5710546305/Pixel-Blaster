@@ -11,7 +11,10 @@ var res = {
     player_aiming_arrow_gun: "res/images/player_aiming_arrow_gun.png",
     player_shield_light: "res/images/player_shield_light.png",
     player_shield_heavy: "res/images/player_shield_heavy.png",
-    player_shield_invincible: "res/images/player_shield_invincible.png"
+    player_shield_invincible: "res/images/player_shield_invincible.png",
+    item_extra_life: 'res/images/item_extra_life.png',
+    item_jetpack: 'res/images/item_jetpack.png',
+    item_shield: 'res/images/item_shield.png'
 };
 
 var g_resources = [];

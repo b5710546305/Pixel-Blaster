@@ -37,6 +37,7 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.bullets = [];
 		this.enemies = [];
+		this.items = [];
 
 		this.spawnDelay = 0;
 		this.resetSpawnDelay();
@@ -101,6 +102,9 @@ var GameLayer = cc.LayerColor.extend({
 		}
 		if(e == cc.KEY.enter){ 
 			this.player.deactivateJetpack();
+			this.addChild(new ExtraLifeItem(this,300,500));
+			this.addChild(new JetpackItem(this,400,500));
+			this.addChild(new ShieldItem(this,500,500));
 		}
 	},
 	/**
@@ -276,6 +280,16 @@ var GameLayer = cc.LayerColor.extend({
 	 */
 	getRandomDouble: function(min, max){
 		return Math.random() * (max - min) + min;
+	},
+	/**
+	 * Pops up an item randomly from enemies or from sky
+	 * This function will be called inside enemies classes
+	 * @param {Number} x = x position
+	 * @param {Number} y = y position
+	 * @return {Void}
+	 */
+	spawnItem: function(x,y){
+		var possibility = this.getRandomInt(0,100);
 	}
 });
 

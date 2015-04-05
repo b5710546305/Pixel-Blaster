@@ -17,7 +17,8 @@
         "src/Floor.js",
         "src/Bullet.js",
         "src/Aliens.js",
-        "src/Drones.js"
+        "src/Drones.js",
+        "src/Items.js"
 
     ]
 }
