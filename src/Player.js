@@ -26,20 +26,24 @@ var Player = cc.Sprite.extend({
 		this.alive = true;
 		this.deadDelay = 20;
 
+		this.blinkTime = 10;
+		this.blinkDelay = 4;
+
 		this.shootDelay = 3;
 		this.bulletSpeed = 30;
 		
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 
 		this.jetpackOn = false;
-		this.jetpackTimer = 100;
+		this.jetpackFuel = 100;
+		this.isFlying = false;
 
 		this.shieldPower = 0;
 
 		this.jetpack = cc.Sprite.create('res/images/player_jetpack.png');
-		this.jetpackFire = cc.Sprite.create('res/images/player_jetpack_flame.png');
+		this.jetpackFlame = cc.Sprite.create('res/images/player_jetpack_flame.png');
 		this.jetpack.setPosition(new cc.Point(this.width/2,this.height/2));
-		this.jetpackFire.setPosition(new cc.Point(this.width/2,this.height/2));
+		this.jetpackFlame.setPosition(new cc.Point(this.width/2,this.height/2));
 		
 	},
 	/**
@@ -61,7 +65,7 @@ var Player = cc.Sprite.extend({
 		var enemies = this.game.enemies;
 		for(var i = 0; i < enemies.length; i++){
 			if(this.collideWithEnemy(enemies[i])){
-				if(this.shieldPower > 0){
+				if(this.shieldPower > 0 ){
 					enemies[i].die();
 					//this.takeDamage();
 				}
@@ -70,9 +74,8 @@ var Player = cc.Sprite.extend({
 		}
 
 		this.shootDelay--;
-		this.jetpackTimer --;
 
-		if (this.ground == null) {
+		if (this.ground == null && !this.jetpackOn) {
 			this.vy += this.G;
 		}
 
@@ -98,6 +101,26 @@ var Player = cc.Sprite.extend({
 				this.setPositionY(screenHeight);
 			}
 		}
+		/*
+		this.blinkTime--;
+		this.blinkDelay--;
+
+		if(this.blinkTime > 0){
+			if(this.blinkDelay < 4 && this.blinkDelay >= 2)
+				//this.setVisible(false);
+			if(this.blinkDelay < 2){
+				//this.setVisible(true);
+			}
+			this.blinkDelay = 4;
+		} else {
+			//this.setVisible(true);
+		}
+		*/
+
+		if(this.ground == null && this.isFlying){
+			this.jetpackFuel--;
+		}
+		
 
 	},
 	/**
@@ -235,6 +258,7 @@ var Player = cc.Sprite.extend({
 			if(dir == -1 && this.ground == null){ //down
 				this.vy = -(this.speed-1);
 			}
+			this.addChild(this.jetpackFlame);
 		}
 	},
 	/**
@@ -254,5 +278,21 @@ var Player = cc.Sprite.extend({
 	atEdgeOrOutOfBounds: function(){
 		var pos = this.getPosition();
 		return pos.x <= 0||pos.x >= screenWidth||pos.y <= 0||pos.y >= screenHeight;
+	},
+	/**
+	 * Get the jetpack item
+	 * @param: {Number} fuel = the flyinf time of the jetpack
+	 * @return {Void}
+	 */
+	getJetpackItem: function(fuel){
+		this.jetpackOn = true;
+		this.jetpackFuel = fuel;
+		this.addChild(this.jetpack);
+	},
+	deactivateJetpack:function(){
+		this.jetpackOn = false;
+		this.isFlying = false;
+		this.removeChild(this.jetpack);
+		this.removeChild(this.jetpackFlame);
 	}
 });
