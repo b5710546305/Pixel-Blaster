@@ -53,7 +53,7 @@ var GroundAlien = cc.Sprite.extend({
 
 		this.setPosition(new cc.Point(pos.x+this.vx,pos.y+this.vy));
 
-		if(pos.y > 0){
+		if(pos.y < 0){
 			this.die(); //die by falling off
 		}
 
@@ -148,12 +148,12 @@ var GroundAlien = cc.Sprite.extend({
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 	},
 	/**
-	 * Check if the fly-drone flew off the screen
+	 * Check if the alien went off the screen
 	 * @return {Boolean}
 	 */
 	outOfBounds: function(){
 		var pos = this.getPosition();
-		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
+		return pos.x < -10||pos.x > screenWidth+10||pos.y < -10||pos.y > screenHeight+10;
 	}
 });
 
@@ -325,11 +325,11 @@ var DriverAlien = cc.Sprite.extend({
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 	},
 	/**
-	 * Check if the fly-drone flew off the screen
+	 * Check if the alien went off the screen
 	 * @return {Boolean}
 	 */
 	outOfBounds: function(){
 		var pos = this.getPosition();
-		return pos.x < 0||pos.x > screenWidth||pos.y < 0||pos.y > screenHeight;
+		return pos.x < -10||pos.x > screenWidth+10||pos.y < -10||pos.y > screenHeight+10;
 	}
 });

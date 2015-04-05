@@ -44,6 +44,11 @@ var GameLayer = cc.LayerColor.extend({
 			this.movementUpdateDelay = -1;
 		}
 
+		this.lifeLabel = cc.LabelTTF.create('0','Arial',this.life);
+		this.lifeLabel.setPosition( new cc.Point( 30, screenHeight-20 ) );
+		this.lifeLabel.setDimensions(new cc.Size(100,400));
+		this.addChild( this.lifeLabel );
+
 
 		return true;
 	},
@@ -57,6 +62,7 @@ var GameLayer = cc.LayerColor.extend({
 		this.player.setFloor(this.floor);
 		this.player.alive = true;
 		this.player.deadDelay = 20;
+		this.lifeLabel.setString(this.life);
 	},
 	/**
 	 * Function for press key each time
@@ -160,8 +166,8 @@ var GameLayer = cc.LayerColor.extend({
 		}
 		this.movementUpdateDelay--;
 
-		if(!this.player.alive){
-			if(this.life >= 0 && this.player.deadDelay < 0){
+		if(!this.player.alive && this.player.deadDelay <= 0){
+			if(this.life >= 0){
 				this.respawnPlayer();
 			} else if (this.life < 0){
 				this.gameOver();
@@ -175,7 +181,7 @@ var GameLayer = cc.LayerColor.extend({
 	updateTasks: function(){
 		if(this.player.alive){this.gameTime++;}
 		if(this.spawnDelay < 0 && this.player.alive){
-			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
+			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType-1)]);
 		}
 		this.spawnDelay--;
 
@@ -196,9 +202,9 @@ var GameLayer = cc.LayerColor.extend({
 		var DRIVER_ALIEN = GameLayer.ENEMIES.DRIVER_ALIEN;
 		switch(enemyType){
 			case GROUND_ALIEN :
-				var spawnDir = this.getRandomInt(-2,3);
+				var spawnDir = this.getRandomInt(-3,3);
 				if(spawnDir == 0){
-					break;
+					spawnDir = 1;
 				}
 				var newEnemy = new GroundAlien(this,spawnDir);
 				this.enemies.push(newEnemy);
@@ -212,9 +218,9 @@ var GameLayer = cc.LayerColor.extend({
 				this.addChild(newEnemy);
 				break;
 			case DRIVER_ALIEN :
-				var spawnDir = this.getRandomInt(-2,3);
+				var spawnDir = this.getRandomInt(-3,3);
 				if(spawnDir == 0){
-					break;
+					spawnDir = 1;
 				}
 				var newEnemy = new DriverAlien(this,spawnDir);
 				this.enemies.push(newEnemy);

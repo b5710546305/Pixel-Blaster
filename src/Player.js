@@ -37,7 +37,7 @@ var Player = cc.Sprite.extend({
 		this.shieldPower = 0;
 
 		this.jetpack = cc.Sprite.create('res/images/player_jetpack.png');
-		this.jetpackFire = cc.Sprite.create('res/images/player_jetpack_fire.png');
+		this.jetpackFire = cc.Sprite.create('res/images/player_jetpack_flame.png');
 		this.jetpack.setPosition(new cc.Point(this.width/2,this.height/2));
 		this.jetpackFire.setPosition(new cc.Point(this.width/2,this.height/2));
 		
@@ -86,7 +86,7 @@ var Player = cc.Sprite.extend({
 			this.deadDelay--;
 		}
 
-		if(this.atEdgeOrOutOfBounds()){
+		if(this.atEdgeOrOutOfBounds() && this.alive){
 			if(pos.x <= 0){
 				this.setPositionX(0);
 			} else if (pos.x >= screenWidth){
@@ -95,7 +95,7 @@ var Player = cc.Sprite.extend({
 			if (pos.y <= 0){
 				this.setPositionY(0);
 			} else if (pos.y >= screenHeight){
-				this.setPositionY(screenHeights);
+				this.setPositionY(screenHeight);
 			}
 		}
 
