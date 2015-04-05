@@ -20,6 +20,7 @@ var GameLayer = cc.LayerColor.extend({
 		this.player = new Player(this);
 		this.addChild(this.player,1);
 
+		//Test jetpack item
 		this.player.getJetpackItem();
 
 		this.floor = new Floor();

@@ -35,8 +35,7 @@ var Player = cc.Sprite.extend({
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 
 		this.jetpackOn = false;
-		this.jetpackFuel = 100;
-		this.isFlying = false;
+		this.jetpackFuel = 50;
 
 		this.shieldPower = 0;
 
@@ -44,7 +43,10 @@ var Player = cc.Sprite.extend({
 		this.jetpackFlame = cc.Sprite.create('res/images/player_jetpack_flame.png');
 		this.jetpack.setPosition(new cc.Point(this.width/2,this.height/2));
 		this.jetpackFlame.setPosition(new cc.Point(this.width/2,this.height/2));
-		
+		this.addChild(this.jetpack);
+		this.addChild(this.jetpackFlame);
+		this.jetpack.setVisible(false);
+		this.jetpackFlame.setVisible(false);
 	},
 	/**
 	 * Update the player's status, such as position, sprite image, states
@@ -75,7 +77,7 @@ var Player = cc.Sprite.extend({
 
 		this.shootDelay--;
 
-		if (this.ground == null && !this.jetpackOn) {
+		if (this.ground == null) {
 			this.vy += this.G;
 		}
 
@@ -117,8 +119,12 @@ var Player = cc.Sprite.extend({
 		}
 		*/
 
-		if(this.ground == null && this.isFlying){
-			this.jetpackFuel--;
+		if(this.ground || this.vy < 0){
+			this.jetpackFlame.setVisible(false);
+		}
+		this.jetpackFuel--;
+		if(this.jetpackFuel <= 0){
+			this.deactivateJetpack();
 		}
 		
 
@@ -258,7 +264,8 @@ var Player = cc.Sprite.extend({
 			if(dir == -1 && this.ground == null){ //down
 				this.vy = -(this.speed-1);
 			}
-			this.addChild(this.jetpackFlame);
+			this.jetpackFlame.setVisible(true);
+			this.jetpackFuel--;
 		}
 	},
 	/**
@@ -287,12 +294,12 @@ var Player = cc.Sprite.extend({
 	getJetpackItem: function(fuel){
 		this.jetpackOn = true;
 		this.jetpackFuel = fuel;
-		this.addChild(this.jetpack);
+		this.jetpack.setVisible(true);
 	},
 	deactivateJetpack:function(){
 		this.jetpackOn = false;
 		this.isFlying = false;
-		this.removeChild(this.jetpack);
-		this.removeChild(this.jetpackFlame);
+		this.jetpack.setVisible(false);
+		this.jetpackFlame.setVisible(false);
 	}
 });
