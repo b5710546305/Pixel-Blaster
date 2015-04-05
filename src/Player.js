@@ -35,7 +35,7 @@ var Player = cc.Sprite.extend({
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 
 		this.jetpackOn = false;
-		this.jetpackFuel = 50;
+		this.jetpackFuel = 5.00;
 
 		this.shieldPower = 0;
 
@@ -92,14 +92,12 @@ var Player = cc.Sprite.extend({
 		}
 
 		if(this.atEdgeOrOutOfBounds() && this.alive){
-			if(pos.x <= 0){
+			if(pos.x <= 0){ //left 
 				this.setPositionX(0);
-			} else if (pos.x >= screenWidth){
+			} else if (pos.x >= screenWidth){ //right
 				this.setPositionX(screenWidth);
 			}
-			if (pos.y <= 0){
-				this.setPositionY(0);
-			} else if (pos.y >= screenHeight){
+			if (pos.y >= screenHeight){ //ceiling
 				this.setPositionY(screenHeight);
 			}
 		}
@@ -119,11 +117,10 @@ var Player = cc.Sprite.extend({
 		}
 		*/
 
-		if(this.ground || this.vy < 0){
+		if(this.vy <= 0){
 			this.jetpackFlame.setVisible(false);
 		}
-		this.jetpackFuel--;
-		if(this.jetpackFuel <= 0){
+		if(this.jetpackFuel == 0 && this.jetpackOn){
 			this.deactivateJetpack();
 		}
 		
@@ -259,13 +256,13 @@ var Player = cc.Sprite.extend({
 	jetpackThrust: function(dir){
 		if(this.jetpackOn){
 			if(dir == 1){ //up
-				this.vy = this.speed-1;
+				this.vy = this.speed+2;
 			}
 			if(dir == -1 && this.ground == null){ //down
 				this.vy = -(this.speed-1);
 			}
 			this.jetpackFlame.setVisible(true);
-			this.jetpackFuel--;
+			this.jetpackFuel-= 0.20;
 		}
 	},
 	/**

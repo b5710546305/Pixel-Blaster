@@ -47,11 +47,14 @@ var GameLayer = cc.LayerColor.extend({
 			this.movementUpdateDelay = -1;
 		}
 
-		this.lifeLabel = cc.LabelTTF.create('0','Arial',this.life);
+		this.lifeLabel = cc.LabelTTF.create('4','Arial',40);
 		this.lifeLabel.setPosition( new cc.Point( 30, screenHeight-20 ) );
-		this.lifeLabel.setDimensions(new cc.Size(100,400));
 		this.addChild( this.lifeLabel );
 
+		this.gameOverLabel = cc.LabelTTF.create('Game Over','Arial',40);
+		this.addChild(this.gameOverLabel);
+		this.gameOverLabel.setVisible(false);
+		this.gameOverLabel.setPosition( new cc.Point( screenWidth/2, screenHeight/2 ) );
 
 		return true;
 	},
@@ -92,7 +95,7 @@ var GameLayer = cc.LayerColor.extend({
 				this.speedMode = true;
 		}
 		if(e == cc.KEY.enter){ 
-			
+			this.player.deactivateJetpack();
 		}
 	},
 	/**
@@ -246,6 +249,7 @@ var GameLayer = cc.LayerColor.extend({
 	 */
 	gameOver: function(){
 		this.gameIsOver = true;
+		this.gameOverLabel.setVisible(true);
 	},
 	/**
 	 * Returns a random integer between min (included) and max (excluded)
