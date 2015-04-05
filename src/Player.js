@@ -38,6 +38,7 @@ var Player = cc.Sprite.extend({
 		this.jetpackFuel = 5.00;
 
 		this.shieldPower = 0;
+		this.invincibleTime = 0;
 
 		this.jetpack = cc.Sprite.create('res/images/player_jetpack.png');
 		this.jetpackFlame = cc.Sprite.create('res/images/player_jetpack_flame.png');
@@ -47,6 +48,19 @@ var Player = cc.Sprite.extend({
 		this.addChild(this.jetpackFlame);
 		this.jetpack.setVisible(false);
 		this.jetpackFlame.setVisible(false);
+
+		this.lightShield = cc.Sprite.create('res/images/player_shield_light.png');
+		this.heavyShield = cc.Sprite.create('res/images/player_shield_heavy.png');
+		this.invincibleShield = cc.Sprite.create('res/images/player_shield_invincible.png');
+		this.lightShield.setPosition(new cc.Point(this.width/2,this.height/2));
+		this.heavyShield.setPosition(new cc.Point(this.width/2,this.height/2));
+		this.invincibleShield.setPosition(new cc.Point(this.width/2,this.height/2));
+		this.addChild(this.lightShield);
+		this.addChild(this.heavyShield);
+		this.addChild(this.invincibleShield);
+		this.lightShield.setVisible(false);
+		this.heavyShield.setVisible(false);
+		this.invincibleShield.setVisible(false);
 	},
 	/**
 	 * Update the player's status, such as position, sprite image, states
@@ -67,9 +81,9 @@ var Player = cc.Sprite.extend({
 		var enemies = this.game.enemies;
 		for(var i = 0; i < enemies.length; i++){
 			if(this.collideWithEnemy(enemies[i])){
-				if(this.shieldPower > 0 ){
+				if(this.shieldPower > 0){
 					enemies[i].die();
-					//this.takeDamage();
+					this.takeDamage();
 				}
 				else {this.die();}
 			}
@@ -116,6 +130,15 @@ var Player = cc.Sprite.extend({
 			//this.setVisible(true);
 		}
 		*/
+		if(this.shieldPower == 3){
+			this.invincibleTime--;
+			if(this.invincibleTime == 0){
+				this.shieldPower = 2;
+				this.heavyShield.setVisible(true);
+				this.invincibleShield.setVisible(false);
+				this.blinkTime = 10;
+			}
+		}
 
 		if(this.vy <= 0){
 			this.jetpackFlame.setVisible(false);
@@ -285,7 +308,7 @@ var Player = cc.Sprite.extend({
 	},
 	/**
 	 * Get the jetpack item
-	 * @param: {Number} fuel = the flyinf time of the jetpack
+	 * @param: {Number} fuel = the flying time of the jetpack
 	 * @return {Void}
 	 */
 	getJetpackItem: function(fuel){
@@ -301,5 +324,52 @@ var Player = cc.Sprite.extend({
 		this.jetpackOn = false;
 		this.jetpack.setVisible(false);
 		this.jetpackFlame.setVisible(false);
+	},
+	/**
+	 * Get the shield item
+	 * @return {Void}
+	 */
+	getShieldItem: function(){
+		switch(this.shieldPower){
+			case 0:
+				this.shieldPower = 1; 
+				this.lightShield.setVisible(true); break;
+			case 1:
+				this.shieldPower = 2;
+				this.lightShield.setVisible(false);
+				this.heavyShield.setVisible(true); break;
+			case 2:
+				this.shieldPower = 3;
+				this.invincibleTime = 80;
+				this.heavyShield.setVisible(false);
+				this.invincibleShield.setVisible(true); break;
+		}
+	},
+	/**
+	 * Do damage on the Shield
+	 * @return {Void}
+	 */
+	takeDamage: function(){
+		switch(this.shieldPower){
+			case 1:
+				this.shieldPower = 0; 
+				this.blinkTime = 10;
+				this.lightShield.setVisible(false); break;
+			case 2:
+				this.shieldPower = 1;
+				this.blinkTime = 10;
+				this.lightShield.setVisible(true);
+				this.heavyShield.setVisible(false); break;
+			case 3:
+				 break;
+		}
+		
+	},
+	/**
+	 * Add 1 player's life into the game
+	 * @return {Void}
+	 */
+	getExtraLifeItem: function(){
+		this.game.life++;
 	}
 });
