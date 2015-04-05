@@ -296,9 +296,12 @@ var Player = cc.Sprite.extend({
 		this.jetpackFuel = fuel;
 		this.jetpack.setVisible(true);
 	},
+	/**
+	 * Remove fully used jetpack
+	 * @return {Void}
+	 */
 	deactivateJetpack:function(){
 		this.jetpackOn = false;
-		this.isFlying = false;
 		this.jetpack.setVisible(false);
 		this.jetpackFlame.setVisible(false);
 	}
