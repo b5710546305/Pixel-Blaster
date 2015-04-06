@@ -370,7 +370,7 @@ var Player = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	getExtraLifeItem: function(){
-		if(this.game.life < 9){this.game.life++;}
+		if(this.game.life < 99){this.game.life++;}
 		this.game.updateLife();
 	}
 });
