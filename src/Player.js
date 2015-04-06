@@ -140,10 +140,10 @@ var Player = cc.Sprite.extend({
 			}
 		}
 
-		if(this.vy <= 0){
+		if(this.vy <= 0 && !this.flydown){
 			this.jetpackFlame.setVisible(false);
 		}
-		if(this.jetpackFuel == 0 && this.jetpackOn){
+		if(this.jetpackFuel == 0.00 && this.jetpackOn){
 			this.deactivateJetpack();
 		}
 		
@@ -282,7 +282,7 @@ var Player = cc.Sprite.extend({
 				this.vy = this.speed+2;
 			}
 			if(dir == -1 && this.ground == null){ //down
-				this.vy = -(this.speed-1);
+				this.vy = -2;
 			}
 			this.jetpackFlame.setVisible(true);
 			this.jetpackFuel-= 0.20;

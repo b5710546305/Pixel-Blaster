@@ -72,6 +72,9 @@ var GroundAlien = cc.Sprite.extend({
 
 		if(this.outOfBounds()){
 			this.game.removeChild(this);
+			this.setPosition(new cc.Point(-1000,-1000));
+			this.vx = 0;
+			this.vy = 0;
 		}
 	},
 	/**
@@ -236,6 +239,9 @@ var DriverAlien = cc.Sprite.extend({
 
 		if(this.outOfBounds()){
 			this.game.removeChild(this);
+			this.setPosition(new cc.Point(-1000,-1000));
+			this.vx = 0;
+			this.vy = 0;
 		}
 	},
 	/**
