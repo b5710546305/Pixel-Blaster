@@ -115,7 +115,7 @@ var Player = cc.Sprite.extend({
 				this.setPositionY(screenHeight);
 			}
 		}
-		/*
+		
 		this.blinkTime--;
 		this.blinkDelay--;
 
@@ -129,7 +129,7 @@ var Player = cc.Sprite.extend({
 		} else {
 			//this.setVisible(true);
 		}
-		*/
+	
 		if(this.shieldPower == 3){
 			this.invincibleTime--;
 			if(this.invincibleTime == 0){
@@ -311,9 +311,9 @@ var Player = cc.Sprite.extend({
 	 * @param: {Number} fuel = the flying time of the jetpack
 	 * @return {Void}
 	 */
-	getJetpackItem: function(fuel){
+	getJetpackItem: function(){
 		this.jetpackOn = true;
-		this.jetpackFuel = fuel;
+		this.jetpackFuel = 5.00;
 		this.jetpack.setVisible(true);
 	},
 	/**

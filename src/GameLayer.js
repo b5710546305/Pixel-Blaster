@@ -53,7 +53,7 @@ var GameLayer = cc.LayerColor.extend({
 			this.movementUpdateDelay = -1;
 		}
 
-		this.lifeLabel = cc.LabelTTF.create('4','Arial',40);
+		this.lifeLabel = cc.LabelTTF.create('Life:'+this.life,'Arial',40);
 		this.lifeLabel.setPosition( new cc.Point( 30, screenHeight-20 ) );
 		this.addChild( this.lifeLabel );
 
@@ -81,7 +81,7 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	updateLife: function(){
-		this.lifeLabel.setString(this.life);
+		this.lifeLabel.setString('Life:'+this.life);
 	},
 	/**
 	 * Function for press key each time
@@ -203,7 +203,7 @@ var GameLayer = cc.LayerColor.extend({
 	updateTasks: function(){
 		if(this.player.alive){this.gameTime++;}
 		if(this.spawnDelay < 0 && this.player.alive){
-			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType-1)]);
+			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
 		}
 		this.spawnDelay--;
 

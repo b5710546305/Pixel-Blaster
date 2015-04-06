@@ -122,7 +122,7 @@ var Item = cc.Sprite.extend({
 	 */
 	beRemoved: function(){
 		this.game.removeChild(this);
-		this.setPosition(new cc.Point(10000,10000)); //move it to out of bound (or else something may disappear in the place the bullet vanishes)
+		this.setPosition(new cc.Point(10000,10000)); //move it to out of bound (or else it will be cheating accidentally)
 	},
 	/**
 	 * Check if the item collides the player
@@ -161,6 +161,8 @@ var ExtraLifeItem = Item.extend({
 	/**
 	 * Constructor
 	 * @param: {GameLayer} game = the current game
+	 * @param {Number} x = starting x position
+	 * @param {Number} y = starting y position
 	 */
 	ctor: function(game,x,y){
 		this._super(game);
@@ -190,6 +192,8 @@ var JetpackItem = Item.extend({
 	/**
 	 * Constructor
 	 * @param: {GameLayer} game = the current game
+	 * @param {Number} x = starting x position
+	 * @param {Number} y = starting y position
 	 */
 	ctor: function(game,x,y){
 		this._super(game);
@@ -219,6 +223,8 @@ var ShieldItem = Item.extend({
 	/**
 	 * Constructor
 	 * @param: {GameLayer} game = the current game
+	 * @param {Number} x = starting x position
+	 * @param {Number} y = starting y position
 	 */
 	ctor: function(game,x,y){
 		this._super(game);
