@@ -120,7 +120,7 @@ var Item = cc.Sprite.extend({
 	 */
 	beRemoved: function(){
 		this.game.removeChild(this);
-		this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else something may disappear in the place the bullet vanishes)
+		this.setPosition(new cc.Point(10000,10000)); //move it to out of bound (or else something may disappear in the place the bullet vanishes)
 	},
 	/**
 	 * Check if the item collides the player
