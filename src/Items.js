@@ -26,6 +26,8 @@ var Item = cc.Sprite.extend({
 		this.floor = this.game.floor;
 
 		this.appearTime = 180;
+
+		this.game.items.push(this);
 	},
 	/**
 	 * Update the item's status, such as position, usually falling into the ground

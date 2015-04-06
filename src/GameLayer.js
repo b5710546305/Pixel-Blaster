@@ -296,7 +296,19 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	spawnItem: function(x,y){
-		var possibility = this.getRandomInt(0,100);
+		var chance = this.getRandomInt(0,100);
+		if(chance < 5){
+			var item = new ExtraLifeItem(this,x,y);
+			this.addChild(item);
+		}
+		if(chance >= 5 && chance < 5+15){
+			var item = new JetpackItem(this,x,y);
+			this.addChild(item);
+		}
+		if(chance >= 5+15 && chance < 5+15+20){
+			var item = new ShieldItem(this,x,y);
+			this.addChild(item);
+		}
 	}
 });
 

@@ -343,6 +343,9 @@ var Player = cc.Sprite.extend({
 				this.invincibleTime = 80;
 				this.heavyShield.setVisible(false);
 				this.invincibleShield.setVisible(true); break;
+			case 3:
+				this.invincibleTime = 80;
+				break;
 		}
 	},
 	/**
