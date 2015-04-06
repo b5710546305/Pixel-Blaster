@@ -74,6 +74,13 @@ var GameLayer = cc.LayerColor.extend({
 		this.player.setFloor(this.floor);
 		this.player.alive = true;
 		this.player.deadDelay = 20;
+		this.updateLife();
+	},
+	/**
+	 * Update current life remaining
+	 * @return {Void}
+	 */
+	updateLife: function(){
 		this.lifeLabel.setString(this.life);
 	},
 	/**

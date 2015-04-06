@@ -58,6 +58,10 @@ var Item = cc.Sprite.extend({
 			this.game.removeChild(this);
 		}
 
+		if(this.collidePlayer()){
+			this.addItemToPlayer();
+		}
+
 	},
 	/**
 	 * Check for collision
@@ -103,7 +107,7 @@ var Item = cc.Sprite.extend({
 		return topFloor;
 	},
 	/**
-	 * Check if the alien went off the screen
+	 * Check if the item went off the screen
 	 * @return {Boolean}
 	 */
 	outOfBounds: function(){
@@ -117,6 +121,22 @@ var Item = cc.Sprite.extend({
 	beRemoved: function(){
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else something may disappear in the place the bullet vanishes)
+	},
+	/**
+	 * Check if the item collides the player
+	 * @return {Boolean}
+	 */
+	collidePlayer: function(){
+		var posRect = this.getBoundingBoxToWorld();
+		var playerPosRect = this.game.player.getBoundingBoxToWorld();
+		return cc.rectIntersectsRect(posRect,playerPosRect);
+	},
+	/**
+	 * Add Item to player
+	 * @return {Void}
+	 */
+	addItemToPlayer: function(){
+		this.beRemoved();
 	}
 });
 
@@ -149,6 +169,14 @@ var ExtraLifeItem = Item.extend({
 
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 		
+	},
+	/**
+	 * Add Item to player
+	 * @return {Void}
+	 */
+	addItemToPlayer: function(){
+		this.beRemoved();
+		this.game.player.getExtraLifeItem();
 	}
 });
 
@@ -170,6 +198,14 @@ var JetpackItem = Item.extend({
 
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 		
+	},
+	/**
+	 * Add Item to player
+	 * @return {Void}
+	 */
+	addItemToPlayer: function(){
+		this.beRemoved();
+		this.game.player.getJetpackItem();
 	}
 });
 
@@ -191,5 +227,13 @@ var ShieldItem = Item.extend({
 
 		this.game.movingObjects.push(this); //replace this.scheduleUpdate(); to enable slowmode and speedmode 
 		
+	},
+	/**
+	 * Add Item to player
+	 * @return {Void}
+	 */
+	addItemToPlayer: function(){
+		this.beRemoved();
+		this.game.player.getShieldItem();
 	}
 });
