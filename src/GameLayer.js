@@ -2,7 +2,7 @@
   * The game layer
   * @class GameLayer
   */
-var GameLayer = cc.LayerColor.extend({
+var GameLayer = cc.LayerColor.extend({ 
 	/**
 	 * Initialize
 	 * @return {Boolean}
@@ -20,20 +20,11 @@ var GameLayer = cc.LayerColor.extend({
 		this.player = new Player(this);
 		this.addChild(this.player,1);
 
-		//Test jetpack item
-		this.player.getJetpackItem();
-
-		//Test Shield item
-		this.player.getShieldItem();
-		this.player.getShieldItem();
-		this.player.getShieldItem();
-
 		this.floor = new Floor();
 		this.addChild(this.floor);
 		this.player.setFloor(this.floor);
 
 		this.life = 4;
-		this.gameIsOver = false;
 
 		this.bullets = [];
 		this.enemies = [];
@@ -53,16 +44,60 @@ var GameLayer = cc.LayerColor.extend({
 			this.movementUpdateDelay = -1;
 		}
 
+		this.titleLabel = cc.Sprite.create('res/images/ui/title.png')
+		this.titleLabel.setPosition( new cc.Point( screenWidth/2, (screenHeight/2)+200 ) );
+		this.addChild(this.titleLabel);
+		this.titleLabel.setVisible(true);
+
+		this.playLabel = cc.Sprite.create('res/images/ui/play.png')
+		this.playLabel.setPosition( new cc.Point( screenWidth/2, (screenHeight/2)-300 ) );
+		this.addChild(this.playLabel);
+		this.playLabel.setVisible(true);
+
+		this.howToPlayLabel = cc.Sprite.create('res/images/ui/how-to-play.png')
+		this.howToPlayLabel.setPosition( new cc.Point( 1, 2 ));
+		this.addChild(this.howToPlayLabel);
+		this.howToPlayLabel.setVisible(true);
+
 		this.lifeLabel = cc.LabelTTF.create('Life:'+this.life,'Arial',40);
-		this.lifeLabel.setPosition( new cc.Point( 30, screenHeight-20 ) );
+		this.lifeLabel.setPosition( new cc.Point( 50, screenHeight-20 ) );
 		this.addChild( this.lifeLabel );
+		this.lifeLabel.setVisible(false);
 
 		this.gameOverLabel = cc.LabelTTF.create('Game Over','Arial',40);
+		this.gameOverLabel.setPosition( new cc.Point( screenWidth/2, screenHeight/2 ) );
 		this.addChild(this.gameOverLabel);
 		this.gameOverLabel.setVisible(false);
-		this.gameOverLabel.setPosition( new cc.Point( screenWidth/2, screenHeight/2 ) );
+
+		//states:
+		this.state = GameLayer.STATE.TITLE;
 
 		return true;
+	},
+	/**
+	 * Run the components for gameplay state
+	 * @return {Void}
+	 */
+	startGame: function(){
+		this.titleLabel.setVisible(false);
+		this.playLabel.setVisible(false);
+		this.howToPlayLabel.setVisible(false);
+		this.lifeLabel.setVisible(true);
+		this.gameOverLabel.setVisible(true);
+		this.addChild(this.player,1);
+		this.state = GameLayer.STATE.GAMEPLAY;
+	},
+	/**
+	 * Reset To Title
+	 * @return {Void}
+	 */
+	restartGame: function(){
+		this.titleLabel.setVisible(true);
+		this.playLabel.setVisible(true);
+		this.howToPlayLabel.setVisible(true);
+		this.lifeLabel.setVisible(false);
+		this.gameOverLabel.setVisible(false);
+		this.state = GameLayer.STATE.TITLE;
 	},
 	/**
 	 * Revive the player back to the game
@@ -89,17 +124,25 @@ var GameLayer = cc.LayerColor.extend({
 	 */
 	onKeyDown: function(e){
 		if(e == cc.KEY.a){ //left
-			this.player.move(-1);
+			if(this.state == GameLayer.STATE.GAMEPLAY){
+				this.player.move(-1);
+			}
 		}
 		if(e == cc.KEY.d){ //right
-			this.player.move(1);
+			if(this.state == GameLayer.STATE.GAMEPLAY){
+				this.player.move(1);
+			}
 		}
 		if(e == cc.KEY.w){ //jump up
-			this.player.jump();
-			this.player.jetpackThrust(1);
+			if(this.state == GameLayer.STATE.GAMEPLAY){
+				this.player.jump();
+				this.player.jetpackThrust(1);
+			}
 		}
 		if(e == cc.KEY.s){ //duck
-			this.player.jetpackThrust(-1);
+			if(this.state == GameLayer.STATE.GAMEPLAY){
+				this.player.jetpackThrust(-1);
+			}
 		}
 		if(e == cc.KEY.space){ //speed mode
 			if(this.speedMode)
@@ -107,11 +150,25 @@ var GameLayer = cc.LayerColor.extend({
 			else 
 				this.speedMode = true;
 		}
-		if(e == cc.KEY.enter){ 
-			this.player.deactivateJetpack();
-			this.addChild(new ExtraLifeItem(this,300,500));
-			this.addChild(new JetpackItem(this,400,500));
-			this.addChild(new ShieldItem(this,500,500));
+		if(e == cc.KEY.enter){ //warp
+			switch(this.state){
+			case GameLayer.STATE.TITLE:
+				this.startGame();
+				break;
+			case GameLayer.STATE.GAMEOVER:
+				this.state = GameLayer.STATE.TITLE;
+				break;
+			}
+		}
+		if(e == cc.KEY.p){ //pause
+			switch(this.state){
+			case GameLayer.STATE.GAMEPLAY:
+				this.state = GameLayer.STATE.PAUSE;
+				break;
+			case GameLayer.STATE.PAUSE:
+				this.state = GameLayer.STATE.GAMEPLAY;
+				break;
+			}
 		}
 	},
 	/**
@@ -167,7 +224,9 @@ var GameLayer = cc.LayerColor.extend({
 
 		var angle = Math.atan((location.y-this.player.y)/Math.abs(location.x-this.player.x));
 		angle = angle * (180/Math.PI);
-		this.player.shoot(angle);
+		if(this.state == GameLayer.STATE.GAMEPLAY){
+			this.player.shoot(angle);
+		}
 	},
 	/**
 	 * When the screen is knows the mouse moves
@@ -201,11 +260,22 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	updateTasks: function(){
-		if(this.player.alive){this.gameTime++;}
-		if(this.spawnDelay < 0 && this.player.alive){
-			this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
+		switch(this.state){
+			case GameLayer.STATE.TITLE:
+				break;
+			case GameLayer.STATE.GAMEPLAY:
+				if(this.player.alive){this.gameTime++;}
+				if(this.spawnDelay < 0 && this.player.alive){
+					this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
+				}
+				this.spawnDelay--;
+				break;
+			case GameLayer.STATE.PAUSE:
+				break;
+			case GameLayer.STATE.GAMEOVER:
+				break;
 		}
-		this.spawnDelay--;
+		
 
 		for(var i = 0; i < this.movingObjects.length; i++){
 			this.movingObjects[i].update();
@@ -264,7 +334,7 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	gameOver: function(){
-		this.gameIsOver = true;
+		this.state = GameLayer.STATE.GAMEOVER;
 		this.gameOverLabel.setVisible(true);
 	},
 	/**
@@ -338,3 +408,15 @@ GameLayer.ENEMIES = {
 	FLY_DRONE: 1,
 	DRIVER_ALIEN: 2
 };
+
+/**
+  * The static final variables for state index for game layer
+  * @class GameLayer.STATE
+  */
+GameLayer.STATE = {
+	TITLE: 0,
+	GAMEPLAY: 1,
+	PAUSE: 2,
+	GAMEOVER: 3
+};
+
