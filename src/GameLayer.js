@@ -72,17 +72,22 @@ var GameLayer = cc.LayerColor.extend({
 		this.addChild( this.lifeCount );
 		this.lifeCount.setVisible(false);
 
-		this.scoreLabel = cc.Sprite.create('res/images/ui/score.png')
+		this.scoreLabel = cc.LabelTTF.create('Score x ','Arial',40);
 		this.scoreLabel.setPosition( new cc.Point( 120, screenHeight-60 ) );
 		this.addChild( this.scoreLabel );
 		this.scoreLabel.setVisible(false);
+
+		this.pauseLabel = cc.LabelTTF.create('Paused','Arial',40);
+		this.pauseLabel.setPosition( new cc.Point( screenWidth/2, screenHeight/2) );
+		this.addChild( this.pauseLabel );
+		this.pauseLabel.setVisible(false);
 
 		this.scoreCount = cc.LabelTTF.create('0','Arial',40);
 		this.scoreCount.setPosition( new cc.Point( 140+this.scoreLabel.x, screenHeight-60 ) );
 		this.addChild( this.scoreCount );
 		this.scoreCount.setVisible(false);
 
-		this.gameOverLabel = cc.Sprite.create('res/images/ui/game-over.png');
+		this.gameOverLabel = cc.LabelTTF.create('Game Over','Arial',40);
 		this.gameOverLabel.setPosition( new cc.Point( screenWidth/2, screenHeight/2 ) );
 		this.addChild(this.gameOverLabel);
 		this.gameOverLabel.setVisible(false);
@@ -102,8 +107,8 @@ var GameLayer = cc.LayerColor.extend({
 		this.howToPlayLabel.setVisible(false);
 		this.lifeLabel.setVisible(true);
 		this.lifeCount.setVisible(true);
-		this.scoreLabel.setVisible(true);
-		this.scoreCount.setVisible(true);
+		//this.scoreLabel.setVisible(true);
+		//this.scoreCount.setVisible(true);
 		this.gameOverLabel.setVisible(false);
 		
 		this.state = GameLayer.STATE.GAMEPLAY;
@@ -163,6 +168,15 @@ var GameLayer = cc.LayerColor.extend({
 		this.lifeCount.setString(this.life);
 	},
 	/**
+	 * Update current score gained
+	 * @return {Void}
+	 * @param {Number} score = score to add
+	 */
+	updateScore: function(score){
+		this.score += score;
+		this.scoreCount.setString(this.score);
+	},
+	/**
 	 * Function for press key each time
 	 * @return {Void}
 	 */
@@ -208,9 +222,11 @@ var GameLayer = cc.LayerColor.extend({
 			switch(this.state){
 			case GameLayer.STATE.GAMEPLAY:
 				this.state = GameLayer.STATE.PAUSE;
+				this.pauseLabel.setVisible(true);
 				break;
 			case GameLayer.STATE.PAUSE:
 				this.state = GameLayer.STATE.GAMEPLAY;
+				this.pauseLabel.setVisible(false);
 				break;
 			}
 		}
@@ -316,6 +332,10 @@ var GameLayer = cc.LayerColor.extend({
 					this.spawnEnemies(this.enemiesType[this.getRandomInt(0,this.totalEnemiesType)]);
 				}
 				this.spawnDelay--;
+
+				for(var i = 0; i < this.movingObjects.length; i++){
+					this.movingObjects[i].update();
+				}
 				break;
 			case GameLayer.STATE.PAUSE:
 				break;
@@ -324,9 +344,7 @@ var GameLayer = cc.LayerColor.extend({
 		}
 		
 
-		for(var i = 0; i < this.movingObjects.length; i++){
-			this.movingObjects[i].update();
-		}
+		
 
 		if(this.howToPlayLabel.x > screenWidth+this.howToPlayLabel.width*2){
 			this.howToPlayLabel.setPositionX(-300);

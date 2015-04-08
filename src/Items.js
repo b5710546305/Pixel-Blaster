@@ -123,6 +123,7 @@ var Item = cc.Sprite.extend({
 	beRemoved: function(){
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(10000,10000)); //move it to out of bound (or else it will be cheating accidentally)
+		this.game.updateScore(50);
 	},
 	/**
 	 * Check if the item collides the player

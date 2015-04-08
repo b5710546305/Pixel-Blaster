@@ -152,6 +152,7 @@ var GroundAlien = cc.Sprite.extend({
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 		this.vx = 0;
 		this.vy = 0;
+		this.game.updateScore(100);
 	},
 	/**
 	 * Check if the alien went off the screen
@@ -335,6 +336,7 @@ var DriverAlien = cc.Sprite.extend({
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 		this.vx = 0;
 		this.vy = 0;
+		this.game.updateScore(100);
 	},
 	/**
 	 * Check if the alien went off the screen
