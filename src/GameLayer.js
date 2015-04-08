@@ -17,12 +17,14 @@ var GameLayer = cc.LayerColor.extend({
 		this.scheduleUpdate();
 		this.movingObjects = [];
 
-		this.player = new Player(this);
-		this.addChild(this.player,1);
+		this.player = null;
 
 		this.floor = new Floor();
 		this.addChild(this.floor);
+		
+		this.player = new Player(this);
 		this.player.setFloor(this.floor);
+		this.addChild(this.player,1);
 
 		this.life = 4;
 
@@ -50,12 +52,12 @@ var GameLayer = cc.LayerColor.extend({
 		this.titleLabel.setVisible(true);
 
 		this.playLabel = cc.Sprite.create('res/images/ui/play.png')
-		this.playLabel.setPosition( new cc.Point( screenWidth/2, (screenHeight/2)-300 ) );
+		this.playLabel.setPosition( new cc.Point( screenWidth/2, (screenHeight/2) ) );
 		this.addChild(this.playLabel);
 		this.playLabel.setVisible(true);
 
 		this.howToPlayLabel = cc.Sprite.create('res/images/ui/how-to-play.png')
-		this.howToPlayLabel.setPosition( new cc.Point( 1, 2 ));
+		this.howToPlayLabel.setPosition( new cc.Point( 0-this.howToPlayLabel.width, 150 ));
 		this.addChild(this.howToPlayLabel);
 		this.howToPlayLabel.setVisible(true);
 
@@ -83,8 +85,8 @@ var GameLayer = cc.LayerColor.extend({
 		this.playLabel.setVisible(false);
 		this.howToPlayLabel.setVisible(false);
 		this.lifeLabel.setVisible(true);
-		this.gameOverLabel.setVisible(true);
-		this.addChild(this.player,1);
+		this.gameOverLabel.setVisible(false);
+		
 		this.state = GameLayer.STATE.GAMEPLAY;
 	},
 	/**
@@ -247,13 +249,16 @@ var GameLayer = cc.LayerColor.extend({
 		}
 		this.movementUpdateDelay--;
 
-		if(!this.player.alive && this.player.deadDelay <= 0){
-			if(this.life >= 0){
-				this.respawnPlayer();
-			} else if (this.life < 0){
-				this.gameOver();
+		if(this.player){
+			if(!this.player.alive && this.player.deadDelay <= 0){
+				if(this.life >= 0){
+					this.respawnPlayer();
+				} else if (this.life < 0){
+					this.gameOver();
+				}
 			}
 		}
+		
 	},
 	/**
 	 * Update the game movement function
@@ -279,6 +284,11 @@ var GameLayer = cc.LayerColor.extend({
 
 		for(var i = 0; i < this.movingObjects.length; i++){
 			this.movingObjects[i].update();
+		}
+
+		this.howToPlayLabel.setPositionX(this.howToPlayLabel.x+2);
+		if(this.howToPlayLabel.x > screenWidth+this.howToPlayLabel.width*2){
+			this.howToPlayLabel.setPositionX(0-this.howToPlayLabel.setPositionX.width);
 		}
 
 		this.movementUpdateDelay = 2;
