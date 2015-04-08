@@ -286,10 +286,10 @@ var GameLayer = cc.LayerColor.extend({
 			this.movingObjects[i].update();
 		}
 
-		this.howToPlayLabel.setPositionX(this.howToPlayLabel.x+2);
 		if(this.howToPlayLabel.x > screenWidth+this.howToPlayLabel.width*2){
-			this.howToPlayLabel.setPositionX(0-this.howToPlayLabel.setPositionX.width);
+			this.howToPlayLabel.setPositionX(-300);
 		}
+		this.howToPlayLabel.setPositionX(this.howToPlayLabel.x+2);
 
 		this.movementUpdateDelay = 2;
 	},
