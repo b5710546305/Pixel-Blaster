@@ -27,6 +27,7 @@ var GameLayer = cc.LayerColor.extend({
 		this.addChild(this.player,1);
 
 		this.life = 4;
+		this.score = 0;
 
 		this.bullets = [];
 		this.enemies = [];
@@ -40,7 +41,7 @@ var GameLayer = cc.LayerColor.extend({
 
 		this.gameTime = 0;
 
-		this.speedMode = true; //for testing in slower computers
+		this.speedMode = false; //for testing in slower computers
 		this.movementUpdateDelay = 2; //for slowing down updating movement (for faster computers)
 		if(this.speedMode){
 			this.movementUpdateDelay = -1;
@@ -61,12 +62,27 @@ var GameLayer = cc.LayerColor.extend({
 		this.addChild(this.howToPlayLabel);
 		this.howToPlayLabel.setVisible(true);
 
-		this.lifeLabel = cc.LabelTTF.create('Life:'+this.life,'Arial',40);
+		this.lifeLabel = cc.Sprite.create('res/images/ui/life.png')
 		this.lifeLabel.setPosition( new cc.Point( 50, screenHeight-20 ) );
 		this.addChild( this.lifeLabel );
 		this.lifeLabel.setVisible(false);
 
-		this.gameOverLabel = cc.LabelTTF.create('Game Over','Arial',40);
+		this.lifeCount = cc.LabelTTF.create(this.life,'Arial',40);
+		this.lifeCount.setPosition( new cc.Point( 70+this.lifeLabel.x, screenHeight-20 ) );
+		this.addChild( this.lifeCount );
+		this.lifeCount.setVisible(false);
+
+		this.scoreLabel = cc.Sprite.create('res/images/ui/score.png')
+		this.scoreLabel.setPosition( new cc.Point( 120, screenHeight-60 ) );
+		this.addChild( this.scoreLabel );
+		this.scoreLabel.setVisible(false);
+
+		this.scoreCount = cc.LabelTTF.create('0','Arial',40);
+		this.scoreCount.setPosition( new cc.Point( 140+this.scoreLabel.x, screenHeight-60 ) );
+		this.addChild( this.scoreCount );
+		this.scoreCount.setVisible(false);
+
+		this.gameOverLabel = cc.Sprite.create('res/images/ui/game-over.png');
 		this.gameOverLabel.setPosition( new cc.Point( screenWidth/2, screenHeight/2 ) );
 		this.addChild(this.gameOverLabel);
 		this.gameOverLabel.setVisible(false);
@@ -85,6 +101,9 @@ var GameLayer = cc.LayerColor.extend({
 		this.playLabel.setVisible(false);
 		this.howToPlayLabel.setVisible(false);
 		this.lifeLabel.setVisible(true);
+		this.lifeCount.setVisible(true);
+		this.scoreLabel.setVisible(true);
+		this.scoreCount.setVisible(true);
 		this.gameOverLabel.setVisible(false);
 		
 		this.state = GameLayer.STATE.GAMEPLAY;
@@ -94,12 +113,35 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	restartGame: function(){
+		for(var i = 0; i < this.enemies.length; i++){
+			this.enemies[i].die();
+		}
+
+		for(var i = 0; i < this.items.length; i++){
+			this.items[i].beRemoved();
+		}
+
+		for(var i = 0; i < this.bullets.length; i++){
+			this.bullets[i].beRemoved();
+		}
+
+		this.player = new Player(this);
+		this.player.setFloor(this.floor);
+		this.addChild(this.player,1);
+		this.life = 4;
+		this.updateLife();
+
 		this.titleLabel.setVisible(true);
 		this.playLabel.setVisible(true);
 		this.howToPlayLabel.setVisible(true);
 		this.lifeLabel.setVisible(false);
+		this.lifeCount.setVisible(false);
+		this.scoreLabel.setVisible(false);
+		this.scoreCount.setVisible(false);
 		this.gameOverLabel.setVisible(false);
 		this.state = GameLayer.STATE.TITLE;
+
+		this.score = 0;
 	},
 	/**
 	 * Revive the player back to the game
@@ -118,7 +160,7 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	updateLife: function(){
-		this.lifeLabel.setString('Life:'+this.life);
+		this.lifeCount.setString(this.life);
 	},
 	/**
 	 * Function for press key each time
@@ -158,7 +200,7 @@ var GameLayer = cc.LayerColor.extend({
 				this.startGame();
 				break;
 			case GameLayer.STATE.GAMEOVER:
-				this.state = GameLayer.STATE.TITLE;
+				this.restartGame();
 				break;
 			}
 		}
