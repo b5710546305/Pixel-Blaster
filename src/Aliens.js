@@ -148,6 +148,9 @@ var GroundAlien = cc.Sprite.extend({
 	 */
 	die: function(){
 		this.game.removeChild(this);
+		var self = this;
+		this.game.enemies.splice(this.game.enemies.indexOf(self),1);
+		this.game.movingObjects.splice(this.game.movingObjects.indexOf(self),1);
 		this.game.spawnItem(this.x,this.y);
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 		this.vx = 0;
@@ -332,6 +335,9 @@ var DriverAlien = cc.Sprite.extend({
 	 */
 	die: function(){
 		this.game.removeChild(this);
+		var self = this;
+		this.game.enemies.splice(this.game.enemies.indexOf(self),1);
+		this.game.movingObjects.splice(this.game.movingObjects.indexOf(self),1);
 		this.game.spawnItem(this.x,this.y);
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
 		this.vx = 0;

@@ -94,7 +94,7 @@ var GameLayer = cc.LayerColor.extend({
 
 		//states:
 		this.state = GameLayer.STATE.TITLE;
-
+		
 		return true;
 	},
 	/**

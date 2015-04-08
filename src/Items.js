@@ -122,6 +122,9 @@ var Item = cc.Sprite.extend({
 	 */
 	beRemoved: function(){
 		this.game.removeChild(this);
+		var self = this;
+		this.game.items.splice(this.game.items.indexOf(self),1);
+		this.game.movingObjects.splice(this.game.movingObjects.indexOf(self),1);
 		this.setPosition(new cc.Point(10000,10000)); //move it to out of bound (or else it will be cheating accidentally)
 		this.game.updateScore(50);
 	},

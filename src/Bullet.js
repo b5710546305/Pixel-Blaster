@@ -93,6 +93,9 @@ var Bullet = cc.Sprite.extend({
 	 */
 	beRemoved: function(){
 		this.game.removeChild(this);
+		var self = this;
+		this.game.bullets.splice(this.game.bullets.indexOf(self),1);
+		this.game.movingObjects.splice(this.game.movingObjects.indexOf(self),1);
 		this.setPosition(new cc.Point(-1000,-1000)); //move it to out of bound (or else something may disappear in the place the bullet vanishes)
 	},
 	/**
