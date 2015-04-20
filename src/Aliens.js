@@ -11,7 +11,7 @@ var GroundAlien = cc.Sprite.extend({
 	ctor: function(game,dir){
 		this._super();
 		this.initWithFile('res/images/ground_alien.png');
-
+		
 		/**WARNING!!**/
 		/**This is GROUND ALIEN, DO NOT confuses the code with DRIVER ALIEN OR OTHER ALIENS**/
 
@@ -147,8 +147,8 @@ var GroundAlien = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	die: function(){
-		var explosion = new Explosion(this,this.x,this.y);
-		if(this.game.state == GameLayer.STATE.GAMEPLAY){this.game.addChild(explosion);}
+		//var explosion = new Explosion(this,this.x,this.y);
+		//if(this.game.state == GameLayer.STATE.GAMEPLAY){this.game.addChild(explosion);}
 
 		this.game.removeChild(this);
 		var self = this;
@@ -337,8 +337,8 @@ var DriverAlien = cc.Sprite.extend({
 	 * @return {Void}
 	 */
 	die: function(){
-		var explosion = new Explosion(this,this.x,this.y);
-		if(this.game.state == GameLayer.STATE.GAMEPLAY){this.game.addChild(explosion);}
+		//var explosion = new Explosion(this,this.x,this.y);
+		//if(this.game.state == GameLayer.STATE.GAMEPLAY){this.game.addChild(explosion);}
 
 		this.game.removeChild(this);
 		var self = this;
