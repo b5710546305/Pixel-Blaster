@@ -203,10 +203,10 @@ var GameLayer = cc.LayerColor.extend({
 			}
 		}
 		if(e == cc.KEY.space){ //speed mode
-			if(this.state == GameLayer.STATE.GAMEPLAY){
+			
 				this.player.jump();
 				this.player.jetpackThrust(1);
-			}
+			
 		}
 		if(e == cc.KEY.enter){ //warp
 			switch(this.state){
