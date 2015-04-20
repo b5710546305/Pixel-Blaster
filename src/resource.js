@@ -14,7 +14,8 @@ var res = {
     player_shield_invincible: "res/images/player_shield_invincible.png",
     item_extra_life: 'res/images/item_extra_life.png',
     item_jetpack: 'res/images/item_jetpack.png',
-    item_shield: 'res/images/item_shield.png'
+    item_shield: 'res/images/item_shield.png',
+    explosion: 'res/images/explosion.png'
 };
 
 var g_resources = [];

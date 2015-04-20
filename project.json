@@ -18,7 +18,8 @@
         "src/Bullet.js",
         "src/Aliens.js",
         "src/Drones.js",
-        "src/Items.js"
+        "src/Items.js",
+        "src/Explosion.js"
 
     ]
 }
