@@ -108,7 +108,7 @@ var FlyDrone = cc.Sprite.extend({
 	 */
 	die: function(){
 		var explosion = new Explosion(this,this.x,this.y);
-		this.game.addChild(explosion);
+		if(this.game.state == GameLayer.STATE.GAMEPLAY){this.game.addChild(explosion);}
 		
 		this.game.removeChild(this);
 		var self = this;

@@ -294,7 +294,7 @@ var Player = cc.Sprite.extend({
 	 */
 	die: function(){
 		var explosion = new Explosion(this,this.x,this.y);
-		this.game.addChild(explosion);
+		if(this.game.state == GameLayer.STATE.GAMEPLAY){this.game.addChild(explosion);}
 
 		this.game.removeChild(this);
 		this.setPosition(new cc.Point(1000,1000)); //move it to out of bound (or else bullet may disappear in the place it dies)
