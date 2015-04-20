@@ -94,7 +94,7 @@ var GameLayer = cc.LayerColor.extend({
 
 		//states:
 		this.state = GameLayer.STATE.TITLE;
-		
+
 		return true;
 	},
 	/**
@@ -118,16 +118,16 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	restartGame: function(){
-		for(var i = 0; i < this.enemies.length; i++){
-			this.enemies[i].die();
+		while(this.enemies.length > 0){
+			this.enemies[0].die();
 		}
 
-		for(var i = 0; i < this.items.length; i++){
-			this.items[i].beRemoved();
+		while(this.items.length > 0){
+			this.items[0].beRemoved();
 		}
 
-		for(var i = 0; i < this.bullets.length; i++){
-			this.bullets[i].beRemoved();
+		while(this.bullets.length > 0){
+			this.bullets[0].beRemoved();
 		}
 
 		this.player = new Player(this);
@@ -191,22 +191,20 @@ var GameLayer = cc.LayerColor.extend({
 				this.player.move(1);
 			}
 		}
-		if(e == cc.KEY.w){ //jump up
+		if(e == cc.KEY.w){ //up
 			if(this.state == GameLayer.STATE.GAMEPLAY){
 				this.player.jump();
 				this.player.jetpackThrust(1);
 			}
 		}
-		if(e == cc.KEY.s){ //duck
+		if(e == cc.KEY.s){ //down
 			if(this.state == GameLayer.STATE.GAMEPLAY){
 				this.player.jetpackThrust(-1);
 			}
 		}
 		if(e == cc.KEY.space){ //speed mode
-			if(this.speedMode)
-				this.speedMode = false;
-			else 
-				this.speedMode = true;
+			this.player.jump();
+			this.player.jetpackThrust(1);
 		}
 		if(e == cc.KEY.enter){ //warp
 			switch(this.state){
@@ -229,6 +227,12 @@ var GameLayer = cc.LayerColor.extend({
 				this.pauseLabel.setVisible(false);
 				break;
 			}
+		}
+		if(e == cc.KEY.q){
+			if(this.speedMode)
+				this.speedMode = false;
+			else a
+				this.speedMode = true;
 		}
 	},
 	/**
@@ -342,9 +346,7 @@ var GameLayer = cc.LayerColor.extend({
 			case GameLayer.STATE.GAMEOVER:
 				break;
 		}
-		
-
-		
+	
 
 		if(this.howToPlayLabel.x > screenWidth+this.howToPlayLabel.width*2){
 			this.howToPlayLabel.setPositionX(-300);
@@ -397,7 +399,7 @@ var GameLayer = cc.LayerColor.extend({
 	 * @return {Void}
 	 */
 	resetSpawnDelay: function(){
-		this.spawnDelay = this.getRandomInt(15,60);
+		this.spawnDelay = this.getRandomInt(15,30);
 	},
 	/**
 	 * End the game
