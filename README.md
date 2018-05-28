@@ -20,8 +20,10 @@ The window of the project will open automatically, enjoy.
 
 
 Current state
+
 -The game is too pointless, just about stress relief by shooting
 Keep one per profile, kinda like Popcap games
+
 	-Achievement system shall be implemented. For Arcade Mode
 		-Merciless Killer - Score 50000 in single game
 		-Cat lives - 9 lives
@@ -32,34 +34,45 @@ Keep one per profile, kinda like Popcap games
 		-Get'em Girl - Score 100000 as a female robot
 		-Happily ever after? - Complete Story Mode
 		-??? - Beat the hidden boss
+		
 -The game is too kind in jetpack, too kind in invincibility.
+
 	-Jetpack shall last shorter and become a common drop
 	-Life and Shield shall be rare drops.
+	
 -No customizable character, I need both gender to interest the game
+
 	-Choose hair, top, bottom, full outfit, glasses.
+	
 -The game is too cruel upon each death, 
+
 	-need blink invincible for ten seconds.
+	
 -The game can broke your finger the longer you play,
+
 	-need to add extra temporary weapons, uncommon drops
 		-laser - click to activate/deactivate last twenty seconds
 		-rapid fire - hold to rapid fire
 		-homing missile - click to launch to the nearest enemy.
 		-nuke - immediately kills all enemy on screen, a rare drop
+		
 -May separate as story and arcade(endless) modes
+
 	-The story mode will tell the humorous awaken of the robot player
 		and the pointless urge to survive
 	-Self insert
 	-level specific challenges
+	
 		-level one - friendly introduction of floor aliens
 		-level two - introduction of the drones, with floor aliens
 		-level three - a spiral fun wave of drones
 		-level four - drones, with floor aliens comes in swarm
-
+		
 		-level six - introduction of rider aliens, with floor aliens
 		-level seven - introduction of witch aliens, with drones
 		-level eight - floor aliens, drones, and riders
 		-level nine - introduction of ufo aliens, with witch aliens
-
+		
 		-level eleven - introduction of kamikaze drones, with drones and riders
 		-level twelve - floor aliens, witch aliens, and rider aliens
 		-level thirteen - kamikaze drones, ufo aliens
